@@ -111,28 +111,28 @@ cap.release()
 cv2.destroyAllWindows()
 \end{lstlisting}
 
-\section{Descrição do Dataset de Treinamento}
+\section{Descrição Planejada do Dataset de Treinamento}
 
-O dataset foi coletado seguindo os critérios:
+O dataset será coletado seguindo os critérios definidos no planejamento metodológico:
 
 \begin{itemize}
-    \item \textbf{Total de sinais coletados:} 150 vídeos (50 por classe)
-    \item \textbf{Usuários participantes:} 5 indivíduos surdos fluentes em Libras
+    \item \textbf{Total de sinais previstos:} 150 vídeos (50 por classe)
+    \item \textbf{Usuários participantes:} 4 voluntários em ambiente controlado
     \item \textbf{Duração média por sinal:} 2-3 segundos (60-90 quadros a 30 FPS)
     \item \textbf{Resolução dos vídeos:} 640x480 pixels
     \item \textbf{Condições de captura:} Iluminação natural e artificial, fundo neutro
-    \item \textbf{Variações incluídas:} Diferentes velocidades de execução, ângulos e distâncias da câmera
+    \item \textbf{Variações planejadas:} Diferentes velocidades de execução, ângulos e distâncias da câmera
 \end{itemize}
 
 \section{Consentimento dos Participantes}
 
-Este projeto seguiu os protocolos éticos necessários para pesquisa envolvendo seres humanos. Todos os participantes assinaram Termo de Consentimento Livre e Esclarecido (TCLE) autorizando o uso de seus vídeos para fins de pesquisa, com garantia de anonimato e privacidade.
+Este projeto seguirá os protocolos éticos necessários para pesquisa envolvendo seres humanos. Todos os participantes deverão assinar Termo de Consentimento Livre e Esclarecido (TCLE) autorizando o uso de seus vídeos para fins de pesquisa, com garantia de anonimato e privacidade.
 
-Os dados foram armazenados de forma segura e apenas os landmarks (coordenadas abstratas) foram utilizados para treinamento, não armazenando os vídeos originais no modelo final.
+Os dados serão armazenados de forma segura e apenas os \textit{landmarks} (coordenadas abstratas) serão utilizados para treinamento, não sendo armazenados os vídeos originais no modelo final.
 
-\section{Requisitos do Sistema}
+\section{Requisitos Previstos do Sistema}
 
-Para executar o LibrasVision em ambiente de produção:
+Para executar o LibrasVision quando desenvolvido:
 
 \begin{table}[htb]
     \centering

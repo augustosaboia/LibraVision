@@ -16,9 +16,9 @@ venv\Scripts\activate
 pip install opencv-python mediapipe tensorflow numpy pandas scikit-learn matplotlib
 \end{lstlisting}
 
-\section{Arquitetura do Dataset}
+\section{Arquitetura Planejada do Dataset}
 
-O dataset foi organizado da seguinte forma:
+O dataset será organizado da seguinte forma:
 
 \begin{verbatim}
 dataset/
@@ -39,9 +39,9 @@ dataset/
 `-- labels.csv
 \end{verbatim}
 
-\section{Hiperparâmetros do Modelo LSTM}
+\section{Hiperparâmetros Planejados do Modelo LSTM}
 
-Os hiperparâmetros utilizados no treinamento do modelo LSTM foram os seguintes:
+Os hiperparâmetros a serem utilizados no treinamento do modelo LSTM são os seguintes valores iniciais de referência, sujeitos a ajuste durante a fase experimental do TCC2:
 
 \begin{table}[htb]
     \centering
@@ -63,21 +63,21 @@ Os hiperparâmetros utilizados no treinamento do modelo LSTM foram os seguintes:
     \end{tabular}
 \end{table}
 
-\section{Matriz de Confusão do Modelo}
+\section{Template da Matriz de Confusão}
 
-A matriz de confusão resultante da validação do modelo apresentou os seguintes resultados:
+A matriz de confusão a ser gerada na etapa de avaliação do TCC2 seguirá o formato abaixo. Os valores serão preenchidos após a realização dos testes com o conjunto de validação, permitindo identificar quais classes de sinais apresentam maiores taxas de erro e quais pares de sinais são frequentemente confundidos pelo modelo.
 
 \begin{table}[htb]
     \centering
-    \caption{Matriz de confusão - Reconhecimento de sinais}
+    \caption{Template da matriz de confusão a ser preenchida na avaliação do modelo}
     \label{tab:matriz_confusao}
     \begin{tabular}{|c|c|c|c|}
         \hline
-        \textbf{Sinal Real} & \textbf{Biblioteca} & \textbf{Prova} & \textbf{Secretaria} \\
+        \textbf{Sinal Real} & \textbf{Biblioteca (pred.)} & \textbf{Prova (pred.)} & \textbf{Secretaria (pred.)} \\
         \hline
-        Biblioteca & 47 & 2 & 1 \\
-        Prova & 1 & 49 & 0 \\
-        Secretaria & 0 & 1 & 50 \\
+        Biblioteca & (a preencher) & (a preencher) & (a preencher) \\
+        Prova & (a preencher) & (a preencher) & (a preencher) \\
+        Secretaria & (a preencher) & (a preencher) & (a preencher) \\
         \hline
     \end{tabular}
 \end{table}
@@ -108,34 +108,34 @@ landmarks = {
 }
 \end{lstlisting}
 
-\section{Métricas de Desempenho}
+\section{Template de Métricas de Desempenho}
 
-Além da acurácia, foram calculadas as seguintes métricas de desempenho:
+As métricas de desempenho a serem calculadas para cada classe de sinal na etapa de avaliação do TCC2 seguirão o formato abaixo. Além da acurácia global, serão reportadas precisão, revogação (\textit{recall}) e F1-score por classe, permitindo uma análise mais granular do desempenho do modelo.
 
 \begin{table}[htb]
     \centering
-    \caption{Métricas de desempenho por classe}
+    \caption{Template de métricas de desempenho por classe a ser preenchido na avaliação}
     \label{tab:metricas_desempenho}
     \begin{tabular}{|l|c|c|c|}
         \hline
         \textbf{Sinal} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\
         \hline
-        Biblioteca & 0.98 & 0.94 & 0.96 \\
-        Prova & 0.96 & 0.98 & 0.97 \\
-        Secretaria & 0.98 & 0.98 & 0.98 \\
+        Biblioteca & (a preencher) & (a preencher) & (a preencher) \\
+        Prova & (a preencher) & (a preencher) & (a preencher) \\
+        Secretaria & (a preencher) & (a preencher) & (a preencher) \\
         \hline
-        Média & 0.97 & 0.97 & 0.97 \\
+        Média ponderada & (a preencher) & (a preencher) & (a preencher) \\
         \hline
     \end{tabular}
 \end{table}
 
-\section{Considerações sobre Generalização}
+\section{Critérios de Generalização a Avaliar}
 
-A análise de generalização do modelo revelou que:
+Na etapa de avaliação do TCC2, serão investigados os seguintes critérios de generalização do modelo, com base no protocolo definido na Seção 3.6:
 
 \begin{itemize}
-    \item O modelo apresenta bom desempenho em variações moderadas de iluminação;
-    \item Usuários com características físicas semelhantes aos do dataset obtiveram acurácia acima de 90\%;
-    \item Ângulos de câmera não tão radicais quanto aos do treinamento mantêm desempenho superior a 85\%;
-    \item A latência média de resposta ficou em aproximadamente 80-100ms, adequada para aplicações interativas.
+    \item Desempenho em variações de iluminação (natural, artificial, contraluz);
+    \item Acurácia com usuários não vistos durante o treinamento, verificando a capacidade de generalização para diferentes perfis físicos e estilos de sinalização;
+    \item Estabilidade do sistema frente a ângulos e distâncias de câmera distintos dos adotados na coleta;
+    \item Latência média de resposta, com meta estabelecida em menos de 100 ms para garantir uso interativo em tempo real.
 \end{itemize}

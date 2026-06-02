@@ -56,11 +56,65 @@ O modelo LSTM será treinado com os dados coletados, utilizando divisão na prop
 
 \section{Avaliação do Sistema}
 
-O sistema será avaliado segundo dois critérios principais:
+A avaliação do LibrasVision constituirá uma etapa central do TCC2, orientada por critérios quantitativos, qualitativos e comparativos. O planejamento desta avaliação é descrito a seguir.
+
+\subsection{Critérios Quantitativos}
+
+O desempenho do sistema será mensurado por meio das seguintes métricas, calculadas sobre o conjunto de teste (composto por usuários que não participaram da etapa de coleta de dados):
 
 \begin{itemize}
-    \item \textbf{Acurácia}: percentual de sinais corretamente classificados pelo modelo em relação ao total de amostras do conjunto de teste;
-    \item \textbf{Latência}: intervalo de tempo entre a execução do sinal pelo usuário e a exibição da tradução em texto na interface.
+    \item \textbf{Acurácia global}: percentual de sinais corretamente classificados pelo modelo em relação ao total de amostras do conjunto de teste;
+    \item \textbf{Precisão, Revogação (\textit{recall}) e F1-score por classe}: métricas calculadas individualmente para cada sinal (``biblioteca'', ``prova'', ``secretaria''), permitindo identificar classes com menor desempenho e possíveis confusões entre sinais similares;
+    \item \textbf{Latência de resposta}: intervalo de tempo, em milissegundos, entre a execução do sinal pelo usuário e a exibição da tradução em texto na interface. A meta estabelecida é latência inferior a 100 ms, valor compatível com uso conversacional em tempo real \cite{attili:24};
+    \item \textbf{Matriz de confusão}: análise visual dos erros de classificação entre classes, permitindo identificar quais pares de sinais são frequentemente confundidos e orientar ajustes no modelo ou na coleta de dados.
 \end{itemize}
 
-Os testes serão realizados com usuários que não participarem da etapa de coleta, de modo a verificar a robustez do modelo frente a variações não vistas durante o treinamento. Essa abordagem garante maior validade externa aos resultados obtidos \cite{attili:24}.
+\subsection{Avaliação de Robustez}
+
+Além do desempenho em condições controladas, o sistema será avaliado quanto à sua robustez frente a variações típicas de ambientes educacionais reais:
+
+\begin{itemize}
+    \item \textbf{Variação de iluminação}: testes com diferentes condições de luz ambiente (natural, artificial, contraluz), verificando a estabilidade do MediaPipe na extração de \textit{landmarks};
+    \item \textbf{Múltiplos usuários}: coleta de amostras de teste com usuários distintos dos utilizados no treinamento, avaliando a capacidade de generalização do modelo para novos sinalizadores com características físicas, velocidades e estilos de sinalização variados;
+    \item \textbf{Oclusão parcial}: avaliação do comportamento do sistema quando as mãos ou partes do corpo estão parcialmente fora do enquadramento ou sobrepostas, situação comum em ambientes de sala de aula.
+\end{itemize}
+
+A separação rigorosa entre os conjuntos de treinamento e teste, garantindo que os participantes do teste não sejam vistos durante o treinamento, será adotada como protocolo padrão, seguindo a abordagem de \citeonline{costa-i3d:25}, que demonstrou ser essencial para garantir a validade externa dos resultados.
+
+\subsection{Análise Qualitativa}
+
+Complementarmente às métricas quantitativas, será realizada análise qualitativa incluindo inspeção visual de padrões de erro, identificação de cenários de falha recorrentes e avaliação da usabilidade da interface por parte dos usuários de teste. Essa análise permitirá identificar causas-raiz de falhas que não são capturadas pelos indicadores numéricos e orientar melhorias específicas no pipeline.
+
+\subsection{Quadro Comparativo com a Literatura}
+
+Para contextualizar o desempenho do LibrasVision frente ao estado da arte, os resultados obtidos serão organizados em um quadro comparativo com os principais sistemas identificados na revisão bibliográfica. As métricas de comparação serão acurácia reportada, latência, arquitetura utilizada, língua de sinais e requisitos de hardware, conforme detalhado no Quadro \ref{quadro:comparativo}.
+
+\begin{quadro}[htb]
+\caption{Comparativo entre sistemas de reconhecimento de língua de sinais da literatura e o LibrasVision}
+\label{quadro:comparativo}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{3.0cm}|p{1.8cm}|p{3.2cm}|p{1.5cm}|p{1.8cm}|p{2.0cm}|}
+\hline
+\textbf{Sistema / Autor} & \textbf{Língua} & \textbf{Arquitetura} & \textbf{Acurácia} & \textbf{Latência} & \textbf{Hardware} \\
+\hline
+\citeonline{anithadevi:25} & ISL & MediaPipe + LSTM empilhado + Transformer & 97,00\% & N.R. &Convencional \\
+\hline
+\citeonline{varshini:25} & ISL & MediaPipe + LSTM (MP-GestLSTM) & 94,38\% & N.R. &Convencional \\
+\hline
+\citeonline{costa-i3d:25} & Libras & I3D (3D CNN) + MINDS-Libras & 92,50\% & Tempo real & Convencional \\
+\hline
+\citeonline{attili:24} & ISL & CNN + MediaPipe & >90,00\% & Baixa & Webcam padrão \\
+\hline
+\citeonline{navendu:24} & ISL & MediaPipe + LSTM-GRU híbrido & 89,50\% & N.R. &Convencional \\
+\hline
+\citeonline{kamble:25} & ASL & MediaPipe + LSTM (SLRNet) & 86,70\% & N.R. &Webcam padrão \\
+\hline
+\citeonline{fanucchi:24} & Libras & VideoMAE (\textit{fine-tuning}) & 84,00\% & N.R. &GPU \\
+\hline
+LibrasVision (meta) & Libras & MediaPipe + LSTM & $\geq$85,00\% & $<$100 ms & Webcam padrão \\
+\hline
+\end{tabular}
+\fonte{Elaborado pelos autores (2026).}
+\end{quadro}
+
+Esse quadro será atualizado com os resultados reais obtidos durante a execução do TCC2, permitindo avaliar em que medida o LibrasVision se posiciona em relação às abordagens já validadas na literatura, especialmente considerando que será o primeiro sistema com foco exclusivo no vocabulário acadêmico da Libras avaliado em condições próximas ao uso real em ambientes universitários brasileiros.
