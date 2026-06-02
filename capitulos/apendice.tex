@@ -1,141 +1,73 @@
-\section{Configuração do Ambiente de Desenvolvimento}
+% capitulos/apendice.tex
 
-Para executar o projeto LibrasVision, é necessário configurar o ambiente com as seguintes dependências:
+\section{Dependências e Ambiente de Desenvolvimento Planejado}
 
-\begin{lstlisting}[language=bash]
-# Criar ambiente virtual Python
-python -m venv venv
+O desenvolvimento do LibrasVision utilizará as seguintes bibliotecas Python, selecionadas com base nas soluções de maior desempenho identificadas na revisão bibliográfica:
 
-# Ativar ambiente (Linux/Mac)
-source venv/bin/activate
-
-# Ou (Windows)
-venv\Scripts\activate
-
-# Instalar dependências
-pip install opencv-python mediapipe tensorflow numpy pandas scikit-learn matplotlib
-\end{lstlisting}
+\begin{table}[htb]
+    \centering
+    \caption{Dependências planejadas para o ambiente de desenvolvimento}
+    \label{tab:dependencias}
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Biblioteca} & \textbf{Versão mínima} & \textbf{Finalidade} \\
+        \hline
+        OpenCV (\texttt{opencv-python}) & 4.5+ & Captura e processamento de frames de vídeo \\
+        MediaPipe & 0.10+ & Extração de landmarks corporais em tempo real \\
+        TensorFlow / Keras & 2.10+ & Construção e treinamento da rede LSTM \\
+        NumPy & 1.23+ & Manipulação de sequências de landmarks \\
+        Scikit-learn & 1.1+ & Divisão treino/validação e métricas de avaliação \\
+        Matplotlib & 3.6+ & Geração de gráficos de desempenho \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \section{Arquitetura Planejada do Dataset}
 
-O dataset será organizado da seguinte forma:
+O dataset a ser construído na etapa de coleta do TCC2 seguirá a estrutura de diretórios abaixo, separando os vídeos brutos por classe e os vetores de \textit{landmarks} extraídos para uso no treinamento:
 
 \begin{verbatim}
 dataset/
 |-- sinais/
 |   |-- biblioteca/
-|   |   |-- usuario1_01.mp4
-|   |   |-- usuario1_02.mp4
+|   |   |-- usuario1_seq01.mp4
+|   |   |-- usuario1_seq02.mp4
 |   |   `-- ...
 |   |-- prova/
-|   |   |-- usuario1_01.mp4
+|   |   |-- usuario1_seq01.mp4
 |   |   `-- ...
 |   `-- secretaria/
 |       `-- ...
 |-- landmarks/
-|   |-- biblioteca.pkl
-|   |-- prova.pkl
-|   `-- secretaria.pkl
+|   |-- biblioteca.npy
+|   |-- prova.npy
+|   `-- secretaria.npy
 `-- labels.csv
 \end{verbatim}
 
-\section{Hiperparâmetros Planejados do Modelo LSTM}
+Cada arquivo \texttt{.npy} conterá as sequências de 543 \textit{landmarks} tridimensionais extraídos pelo MediaPipe Holistic por frame, organizados em janelas de 30 frames por sinal gravado. O arquivo \texttt{labels.csv} associará cada sequência à sua classe e ao identificador do voluntário, permitindo a separação rigorosa entre conjuntos de treino e teste por sinalizador.
 
-Os hiperparâmetros a serem utilizados no treinamento do modelo LSTM são os seguintes valores iniciais de referência, sujeitos a ajuste durante a fase experimental do TCC2:
+\section{Hiperparâmetros Iniciais Planejados do Modelo LSTM}
+
+Os valores abaixo representam o ponto de partida para o treinamento do modelo LSTM, definidos com base nos parâmetros reportados por \citeonline{kamble:25} e \citeonline{varshini:25} em arquiteturas similares. Esses valores serão ajustados durante a fase experimental do TCC2 por meio de busca em grade (\textit{grid search}) ou ajuste manual orientado pelas curvas de aprendizado.
 
 \begin{table}[htb]
     \centering
-    \caption{Hiperparâmetros do modelo LSTM}
+    \caption{Hiperparâmetros iniciais de referência para o modelo LSTM}
     \label{tab:hiperparametros}
-    \begin{tabular}{|l|c|}
+    \begin{tabular}{|l|c|l|}
         \hline
-        \textbf{Parâmetro} & \textbf{Valor} \\
+        \textbf{Parâmetro} & \textbf{Valor inicial} & \textbf{Justificativa} \\
         \hline
-        Número de unidades LSTM (1ª camada) & 64 \\
-        Número de unidades LSTM (2ª camada) & 32 \\
-        Taxa de aprendizado (learning rate) & 0.001 \\
-        Número de épocas & 100 \\
-        Tamanho do batch & 32 \\
-        Função de ativação & ReLU \\
-        Função de perda & Categorical Crossentropy \\
-        Otimizador & Adam \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\section{Template da Matriz de Confusão}
-
-A matriz de confusão a ser gerada na etapa de avaliação do TCC2 seguirá o formato abaixo. Os valores serão preenchidos após a realização dos testes com o conjunto de validação, permitindo identificar quais classes de sinais apresentam maiores taxas de erro e quais pares de sinais são frequentemente confundidos pelo modelo.
-
-\begin{table}[htb]
-    \centering
-    \caption{Template da matriz de confusão a ser preenchida na avaliação do modelo}
-    \label{tab:matriz_confusao}
-    \begin{tabular}{|c|c|c|c|}
-        \hline
-        \textbf{Sinal Real} & \textbf{Biblioteca (pred.)} & \textbf{Prova (pred.)} & \textbf{Secretaria (pred.)} \\
-        \hline
-        Biblioteca & (a preencher) & (a preencher) & (a preencher) \\
-        Prova & (a preencher) & (a preencher) & (a preencher) \\
-        Secretaria & (a preencher) & (a preencher) & (a preencher) \\
+        Unidades LSTM (1ª camada) & 64 & Capacidade moderada para sequências curtas \\
+        Unidades LSTM (2ª camada) & 32 & Redução progressiva de dimensionalidade \\
+        Taxa de aprendizado & 0,001 & Padrão Adam para tarefas de classificação \\
+        Número de épocas & 100 & Com \textit{early stopping} por validação \\
+        Tamanho do \textit{batch} & 32 & Equilíbrio entre velocidade e estabilidade \\
+        Função de ativação & ReLU & Eficaz em camadas densas intermediárias \\
+        Função de perda & Categorical Crossentropy & Adequada para classificação multiclasse \\
+        Otimizador & Adam & Adaptativo, padrão em redes recorrentes \\
+        Divisão treino/validação & 80\% / 20\% & Conforme protocolo da Seção 3.5 \\
         \hline
     \end{tabular}
 \end{table}
-
-\section{Exemplo de Landmarks Extraídos}
-
-A estrutura dos landmarks extraídos pelo MediaPipe Holistic segue o seguinte padrão:
-
-\begin{lstlisting}[language=Python]
-# Estrutura dos landmarks
-landmarks = {
-    'pose': [  # 33 pontos do corpo
-        {'x': 0.5, 'y': 0.3, 'z': -0.1, 'visibility': 0.99},
-        # ... mais 32 pontos
-    ],
-    'left_hand': [  # 21 pontos da mão esquerda
-        {'x': 0.4, 'y': 0.35, 'z': 0.05, 'visibility': 0.95},
-        # ... mais 20 pontos
-    ],
-    'right_hand': [  # 21 pontos da mão direita
-        {'x': 0.6, 'y': 0.35, 'z': 0.05, 'visibility': 0.95},
-        # ... mais 20 pontos
-    ],
-    'face': [  # 468 pontos do rosto
-        {'x': 0.5, 'y': 0.2, 'z': -0.1, 'visibility': 0.98},
-        # ... mais 467 pontos
-    ]
-}
-\end{lstlisting}
-
-\section{Template de Métricas de Desempenho}
-
-As métricas de desempenho a serem calculadas para cada classe de sinal na etapa de avaliação do TCC2 seguirão o formato abaixo. Além da acurácia global, serão reportadas precisão, revogação (\textit{recall}) e F1-score por classe, permitindo uma análise mais granular do desempenho do modelo.
-
-\begin{table}[htb]
-    \centering
-    \caption{Template de métricas de desempenho por classe a ser preenchido na avaliação}
-    \label{tab:metricas_desempenho}
-    \begin{tabular}{|l|c|c|c|}
-        \hline
-        \textbf{Sinal} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\
-        \hline
-        Biblioteca & (a preencher) & (a preencher) & (a preencher) \\
-        Prova & (a preencher) & (a preencher) & (a preencher) \\
-        Secretaria & (a preencher) & (a preencher) & (a preencher) \\
-        \hline
-        Média ponderada & (a preencher) & (a preencher) & (a preencher) \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\section{Critérios de Generalização a Avaliar}
-
-Na etapa de avaliação do TCC2, serão investigados os seguintes critérios de generalização do modelo, com base no protocolo definido na Seção 3.6:
-
-\begin{itemize}
-    \item Desempenho em variações de iluminação (natural, artificial, contraluz);
-    \item Acurácia com usuários não vistos durante o treinamento, verificando a capacidade de generalização para diferentes perfis físicos e estilos de sinalização;
-    \item Estabilidade do sistema frente a ângulos e distâncias de câmera distintos dos adotados na coleta;
-    \item Latência média de resposta, com meta estabelecida em menos de 100 ms para garantir uso interativo em tempo real.
-\end{itemize}
