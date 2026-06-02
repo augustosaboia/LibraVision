@@ -38,12 +38,13 @@ No domínio do reconhecimento de gestos e língua de sinais, as CNNs demonstrara
 
 A generalização das CNNs pode ser significativamente melhorada por meio de técnicas de aumento de dados (\textit{data augmentation}). \citeonline{islam:19} demonstraram que a aplicação de rotações, zoom e deslocamentos nas imagens de treinamento elevou a acurácia de um modelo CNN de 92,87\% para 97,12\%, evidenciando a importância do pré-processamento de dados para a robustez dos modelos em cenários reais. Complementarmente, \citeonline{sahoo:19} mostraram que a redução de dimensionalidade por Análise de Componentes Principais (PCA) aplicada às \textit{features} extraídas por redes pré-treinadas (como a AlexNet) melhora tanto a acurácia quanto a eficiência computacional de classificadores SVM em tarefas de reconhecimento de gestos. Uma abordagem criativa para Libras foi proposta por \citeonline{alves:24}, que converteu sequências temporais de \textit{landmarks} em imagens 2D e as submeteu a uma CNN simples, superando o estado da arte em acurácia com menor custo de treinamento, estratégia que ilustra a flexibilidade das CNNs mesmo quando aplicadas a representações não-tradicionais.
 
-\begin{figure}[htb]
+\begin{figure}[htp]
     \centering
     \includegraphics[width=0.85\textwidth]{images/cnn_architecture.png}
     \caption{Arquitetura típica de uma CNN: camadas convolucionais e de \textit{pooling} para extração de características, seguidas de camadas totalmente conectadas para classificação}
     \label{fig:cnn_architecture}
 \end{figure}
+\FloatBarrier
 
 \subsection{Redes Neurais Recorrentes: LSTM e GRU}
 
