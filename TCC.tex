@@ -246,6 +246,7 @@ The LibrasVision project proposes the development of a computer vision system ca
 \chapter{Considerações Finais}
     \input{capitulos/conclusao}
 
+\postextual
 
 % --------------------------------------
 % REFERÊNCIAS
@@ -267,19 +268,24 @@ The LibrasVision project proposes the development of a computer vision system ca
 % --------------------------------------
 \newpage
     \chapter*{GLOSSÁRIO}
+    \addcontentsline{toc}{chapter}{GLOSSÁRIO}
     \input{capitulos/glossario}
 
 % --------------------------------------
 % APÊNDICE
 % --------------------------------------
-    \chapter*{APÊNDICE}
+\begin{apendicesenv}
+\chapter{Protótipos e Configurações de Desenvolvimento}
     \input{capitulos/apendice}
+\end{apendicesenv}
 
 % --------------------------------------
 % ANEXOS
 % --------------------------------------
-    \chapter*{ANEXOS}
+\begin{anexosenv}
+\chapter{Protótipos de Código e Planejamento do Dataset}
     \input{capitulos/anexo}
+\end{anexosenv}
 
 
 \end{document}
