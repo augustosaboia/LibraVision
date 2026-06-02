@@ -1,3 +1,7 @@
 % capitulos/conclusao.tex
 
 Esta primeira etapa do projeto Libras
+
+\section{Limitações do Estudo}
+
+O mapeamento antecipado das limitações é essencial para delimitar o escopo do projeto e orientar trabalhos futuros. O \textit{dataset} construído abrange apenas sinais relacionados ao contexto acadêmico, o que restringe a aplicabilidade do sistema a esse domínio específico. Além disso, a coleta com 4 voluntários em ambiente controlado pode introduzir viés de representatividade — usuários com características físicas, velocidades de execução ou estilos de sinalização distintos dos presentes no \textit{dataset} podem obter taxas de reconhecimento inferiores às reportadas. Essa limitação é documentada de forma análoga em \cite{abdulhussein:20}, que ressalta a dificuldade de generalização de modelos treinados em conjuntos de dados pequenos. Adicionalmente, o desempenho do sistema está condicionado à qualidade da captura de vídeo: iluminação inadequada, oclusão parcial das mãos ou ângulos desfavoráveis da câmera podem degradar a extração de \textit{landmarks} pelo MediaPipe, comprometendo a classificação posterior. Ambientes universitários reais apresentam variabilidade de iluminação e posicionamento que não foram completamente reproduzidos na fase de coleta, o que pode reduzir a acurácia em cenários de uso efetivo. \cite{jain:24} identifica desafio semelhante ao tratar da robustez de sistemas de reconhecimento em condições não controladas.
