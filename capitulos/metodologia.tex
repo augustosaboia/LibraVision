@@ -92,24 +92,26 @@ Para contextualizar o desempenho do LibrasVision frente ao estado da arte, os re
 \begin{quadro}[htb]
 \caption{Comparativo entre sistemas de reconhecimento de língua de sinais da literatura e o LibrasVision}
 \label{quadro:comparativo}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{|p{3.0cm}|p{1.8cm}|p{3.2cm}|p{1.5cm}|p{1.8cm}|p{2.0cm}|}
+\begin{tabular}{|p{2.8cm}|p{1.2cm}|p{3.2cm}|p{1.5cm}|p{1.5cm}|p{1.9cm}|}
 \hline
 \textbf{Sistema / Autor} & \textbf{Língua} & \textbf{Arquitetura} & \textbf{Acurácia} & \textbf{Latência} & \textbf{Hardware} \\
 \hline
-\citeonline{anithadevi:25} & ISL & MediaPipe + LSTM empilhado + Transformer & 97,00\% & N.R. &Convencional \\
+\citeonline{anithadevi:25} & ISL & MediaPipe + LSTM empilhado + Transformer & 97,00\% & N.R. & Convencional \\
 \hline
-\citeonline{varshini:25} & ISL & MediaPipe + LSTM (MP-GestLSTM) & 94,38\% & N.R. &Convencional \\
+\citeonline{varshini:25} & ISL & MediaPipe + LSTM (MP-GestLSTM) & 94,38\% & N.R. & Convencional \\
 \hline
 \citeonline{costa-i3d:25} & Libras & I3D (3D CNN) + MINDS-Libras & 92,50\% & Tempo real & Convencional \\
 \hline
 \citeonline{attili:24} & ISL & CNN + MediaPipe & >90,00\% & Baixa & Webcam padrão \\
 \hline
-\citeonline{navendu:24} & ISL & MediaPipe + LSTM-GRU híbrido & 89,50\% & N.R. &Convencional \\
+\citeonline{navendu:24} & ISL & MediaPipe + LSTM-GRU híbrido & 89,50\% & N.R. & Convencional \\
 \hline
-\citeonline{kamble:25} & ASL & MediaPipe + LSTM (SLRNet) & 86,70\% & N.R. &Webcam padrão \\
+\citeonline{kamble:25} & ASL & MediaPipe + LSTM (SLRNet) & 86,70\% & N.R. & Webcam padrão \\
 \hline
-\citeonline{fanucchi:24} & Libras & VideoMAE (\textit{fine-tuning}) & 84,00\% & N.R. &GPU \\
+\citeonline{fanucchi:24} & Libras & VideoMAE (\textit{fine-tuning}) & 84,00\% & N.R. & GPU \\
 \hline
 LibrasVision (meta) & Libras & MediaPipe + LSTM & $\geq$85,00\% & $<$100 ms & Webcam padrão \\
 \hline
