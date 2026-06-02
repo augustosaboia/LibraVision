@@ -1,4 +1,11 @@
-O desenvolvimento do projeto LibrasVision situa-se na interseção entre Visão Computacional, Aprendizado Profundo e acessibilidade linguística. Para compreender as escolhas técnicas adotadas, é necessário percorrer o estado da arte nessas áreas, desde os fundamentos do reconhecimento de gestos até os modelos mais avançados de tradução de língua de sinais, com atenção especial ao contexto brasileiro da Língua Brasileira de Sinais (Libras).
+O projeto LibrasVision situa-se na interseção entre Visão Computacional, Aprendizado Profundo e acessibilidade linguística. Para compreender as escolhas técnicas adotadas, é necessário percorrer o estado da arte nessas áreas, desde os fundamentos do reconhecimento de gestos até os modelos mais avançados de tradução de língua de sinais, com atenção especial ao contexto brasileiro da Língua Brasileira de Sinais (Libras). Revisões sistemáticas recentes confirmam que esse campo está em rápida expansão, com destaque para abordagens baseadas em visão computacional e aprendizado profundo \cite{costa-slr:25, silva-ia:25}. No Brasil, a relevância é amplificada pelo contexto sociolinguístico: a Libras é reconhecida como meio legal de comunicação da comunidade surda brasileira \cite{dockens:18}, e sua inclusão digital depende diretamente do avanço dessas tecnologias assistivas \cite{sousa:25}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/venn_areas.png}
+    \caption{Interseção entre Visão Computacional, Aprendizado Profundo e Acessibilidade Linguística no contexto do LibrasVision}
+    \label{fig:venn_areas}
+\end{figure}
 
 \begin{figure}[htb]
     \centering
@@ -28,21 +35,55 @@ O Aprendizado Profundo (\textit{Deep Learning}) revolucionou o reconhecimento de
 
 \subsection{Redes Neurais Convolucionais (CNNs)}
 
-As CNNs são especialmente eficazes na extração de características espaciais em imagens. \citeonline{li:22}, em um survey abrangente sobre CNNs, destacam sua capacidade de aprender filtros convolucionais que capturam padrões locais e hierárquicos em dados visuais. No domínio do reconhecimento de gestos, \citeonline{attili:24} utilizaram técnicas de visão computacional baseadas em CNN para desenvolver um sistema de tradução da Língua de Sinais Indiana (ISL) em tempo real, demonstrando que tais sistemas podem alcançar alta acurácia mesmo com hardware convencional --- como uma webcam padrão. \citeonline{abdulhussein:20} também confirmaram a efetividade de CNNs profundas para classificação de sinais estáticos do alfabeto americano (ASL).
+As Redes Neurais Convolucionais (CNNs) são arquiteturas de aprendizado profundo especialmente eficazes na extração de características espaciais em imagens. Sua estrutura típica encadeia camadas convolucionais — que aplicam filtros aprendíveis sobre a entrada para detectar padrões locais como bordas, texturas e formas —, camadas de \textit{pooling} — que reduzem a dimensionalidade preservando as características mais relevantes — e camadas totalmente conectadas (\textit{fully connected}) que realizam a classificação final. Conforme \citeonline{li:22}, em survey abrangente sobre CNNs, essa hierarquia de filtros permite que o modelo aprenda representações progressivamente mais abstratas: das bordas simples nas primeiras camadas até configurações complexas de dedos e mãos nas camadas mais profundas.
 
-A generalização das CNNs pode ser significativamente melhorada por meio de técnicas de aumento de dados (\textit{data augmentation}). \citeonline{islam:19} demonstraram que a aplicação de rotações, zoom e deslocamentos nas imagens de treinamento elevou a acurácia de um modelo CNN de 92,87\% para 97,12\%, evidenciando a importância do pré-processamento de dados para a robustez dos modelos em cenários reais. Complementarmente, \citeonline{sahoo:19} mostraram que a redução de dimensionalidade por Análise de Componentes Principais (PCA) aplicada às \textit{features} extraídas por redes pré-treinadas (como a AlexNet) melhora tanto a acurácia quanto a eficiência computacional de classificadores SVM em tarefas de reconhecimento de gestos.
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/cnn_architecture.png}
+    \caption{Arquitetura típica de uma CNN: camadas convolucionais e de \textit{pooling} para extração de características, seguidas de camadas totalmente conectadas para classificação}
+    \label{fig:cnn_architecture}
+\end{figure}
+
+No domínio do reconhecimento de gestos e língua de sinais, as CNNs demonstraram resultados expressivos. \citeonline{attili:24} desenvolveram um sistema de tradução da Língua de Sinais Indiana (ISL) em tempo real baseado em CNN, demonstrando que tais sistemas podem alcançar alta acurácia mesmo com hardware convencional --- como uma webcam padrão. \citeonline{abdulhussein:20} confirmaram a efetividade de CNNs profundas para classificação de sinais estáticos do alfabeto americano (ASL), e \citeonline{wang:24} expandiram essa aplicação para sistemas inteligentes de aprendizado e promoção de língua de sinais integrados a ambientes educacionais.
+
+A generalização das CNNs pode ser significativamente melhorada por meio de técnicas de aumento de dados (\textit{data augmentation}). \citeonline{islam:19} demonstraram que a aplicação de rotações, zoom e deslocamentos nas imagens de treinamento elevou a acurácia de um modelo CNN de 92,87\% para 97,12\%, evidenciando a importância do pré-processamento de dados para a robustez dos modelos em cenários reais. Complementarmente, \citeonline{sahoo:19} mostraram que a redução de dimensionalidade por Análise de Componentes Principais (PCA) aplicada às \textit{features} extraídas por redes pré-treinadas (como a AlexNet) melhora tanto a acurácia quanto a eficiência computacional de classificadores SVM em tarefas de reconhecimento de gestos. Uma abordagem criativa para Libras foi proposta por \citeonline{alves:24}, que converteu sequências temporais de \textit{landmarks} em imagens 2D e as submeteu a uma CNN simples, superando o estado da arte em acurácia com menor custo de treinamento --- estratégia que ilustra a flexibilidade das CNNs mesmo quando aplicadas a representações não-tradicionais.
 
 \subsection{Redes Neurais Recorrentes: LSTM e GRU}
 
-Enquanto as CNNs são excelentes para analisar características espaciais, os sinais dinâmicos de língua de sinais possuem uma dimensão temporal essencial: a mesma configuração de mão pode corresponder a sinais completamente diferentes dependendo do movimento realizado ao longo do tempo. Para modelar essa dinâmica temporal, as Redes Neurais Recorrentes, especialmente o LSTM, tornaram-se a escolha predominante na literatura.
+Enquanto as CNNs são excelentes para analisar características espaciais, os sinais dinâmicos de língua de sinais possuem uma dimensão temporal essencial: a mesma configuração de mão pode corresponder a sinais completamente diferentes dependendo do movimento realizado ao longo do tempo. As Redes Neurais Recorrentes (RNNs) foram criadas para modelar exatamente esse tipo de dependência sequencial, mantendo um estado interno que se atualiza a cada passo de tempo. No entanto, as RNNs simples sofrem do problema do \textit{vanishing gradient}: durante o treinamento, o gradiente se torna progressivamente menor à medida que é propagado ao longo de sequências longas, impedindo o aprendizado de dependências temporais distantes.
 
-\citeonline{kamble:25} introduziram o SLRNet, um sistema baseado em webcam que combina MediaPipe Holistic com redes LSTM para reconhecimento do alfabeto e palavras funcionais da ASL, atingindo acurácia de validação de 86,7\% sem necessidade de hardware especializado. De forma similar, \citeonline{varshini:25} desenvolveram o MP-GestLSTM, criando um dataset personalizado com 800 vídeos de 20 classes da ASL e treinando uma rede LSTM customizada que atingiu acurácia de 94,38\% em testes, superando pesquisas anteriores com uma arquitetura simples e eficiente. Para capturar dependências temporais complexas, \citeonline{navendu:24} propuseram o uso de uma rede híbrida LSTM-GRU para reconhecimento de ISL ao nível de palavra via MediaPipe, alcançando acurácia de 89,50\% e superando métodos contemporâneos tanto em precisão quanto em velocidade de processamento.
+A arquitetura LSTM (\textit{Long Short-Term Memory}), proposta por Hochreiter e Schmidhuber (1997), resolve esse problema por meio de três portas controláveis: a \textit{forget gate}, que decide quais informações do estado anterior descartar; a \textit{input gate}, que determina quais novas informações armazenar; e a \textit{output gate}, que controla quais partes do estado interno são expostas como saída. Esse mecanismo de memória seletiva permite ao LSTM capturar dependências de longo alcance em sequências de vídeo, tornando-o especialmente adequado ao reconhecimento de língua de sinais \cite{kamble:25, varshini:25}.
 
-A combinação de MediaPipe com LSTM empilhado (\textit{stacked LSTM}) tem se mostrado especialmente poderosa. \citeonline{anithadevi:25} apresentaram um framework avançado que integra o rastreamento de \textit{landmarks} do MediaPipe com uma rede LSTM aprimorada e um módulo de paráfrase baseado em Transformer, alcançando desempenho excepcional de 97\% de acurácia e 98,17\% de precisão no reconhecimento de 30 categorias de sinais dinâmicos da ISL.
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.80\textwidth]{images/lstm_cell.png}
+    \caption{Estrutura interna de uma célula LSTM com suas três portas (forget, input e output) e o \textit{cell state} que persiste ao longo da sequência temporal}
+    \label{fig:lstm_cell}
+\end{figure}
+
+A GRU (\textit{Gated Recurrent Unit}) é uma variante simplificada do LSTM que consolida as portas de forget e input em uma única \textit{update gate} e introduz uma \textit{reset gate}, reduzindo o número de parâmetros e o custo computacional sem sacrifício expressivo de desempenho. \citeonline{navendu:24} exploraram diretamente essa complementaridade ao propor uma rede híbrida LSTM-GRU para reconhecimento de ISL ao nível de palavra via MediaPipe, alcançando acurácia de 89,50\% e superando métodos contemporâneos tanto em precisão quanto em velocidade de processamento.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/lstm_unrolled.png}
+    \caption{LSTM desenrolado no tempo: cada frame da sequência de vídeo alimenta uma célula LSTM, cujo estado oculto é propagado para a célula seguinte até a classificação final do sinal}
+    \label{fig:lstm_unrolled}
+\end{figure}
+
+Na prática do reconhecimento de língua de sinais, o LSTM tem apresentado resultados consistentes. \citeonline{kamble:25} introduziram o SLRNet, que combina MediaPipe Holistic com redes LSTM para reconhecimento do alfabeto e palavras funcionais da ASL, atingindo acurácia de validação de 86,7\% sem necessidade de hardware especializado. \citeonline{varshini:25} desenvolveram o MP-GestLSTM com acurácia de 94,38\%, e \citeonline{myagila:25} demonstraram que abordagens baseadas em estimativa de pose aliadas a aprendizado profundo permitem reconhecimento robusto mesmo em vídeos contínuos, atingindo 95\% de acurácia em sinais isolados. A combinação de MediaPipe com LSTM empilhado (\textit{stacked LSTM}) tem se mostrado especialmente poderosa: \citeonline{anithadevi:25} alcançaram 97\% de acurácia e 98,17\% de precisão integrando \textit{landmarks} do MediaPipe com LSTM aprimorado e módulo de paráfrase baseado em Transformer.
 
 \subsection{Arquiteturas Híbridas CNN+RNN}
 
-A combinação de CNNs para extração de características espaciais com RNNs para modelagem temporal representa a abordagem dominante para o reconhecimento de sinais dinâmicos. \citeonline{grossi:24}, em estudo comparativo aplicado à Libras, avaliou modelos CNN+RNN e Transformers para classificação de vídeos de sinais, validando a eficácia do Aprendizado Profundo para classificação temporal de sinais. Essa estratégia de pipelining entre extratores convolucionais e modeladores sequenciais é o fundamento da arquitetura adotada no LibrasVision.
+A combinação de CNNs para extração de características espaciais com RNNs para modelagem temporal representa a abordagem dominante para o reconhecimento de sinais dinâmicos. O funcionamento do pipeline segue uma lógica bem definida: a CNN processa cada frame individualmente, extraindo um vetor de características que encapsula a configuração espacial da mão e do corpo naquele instante; esses vetores são então organizados em uma sequência temporal e fornecidos à RNN --- tipicamente um LSTM --- que aprende as dependências entre os frames para identificar o padrão de movimento característico de cada sinal. Essa divisão de responsabilidades é eficiente: a CNN abstrai o ``o quê'' (configuração espacial) e a RNN abstrai o ``como'' (evolução temporal).
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.90\textwidth]{images/cnn_lstm_pipeline.png}
+    \caption{Pipeline CNN+LSTM para reconhecimento de sinais dinâmicos: frames de vídeo são processados pela CNN para extração de características, que alimentam o LSTM para modelagem temporal e classificação final}
+    \label{fig:cnn_lstm_pipeline}
+\end{figure}
+
+\citeonline{grossi:24}, em estudo comparativo aplicado à Libras, avaliou modelos CNN+RNN e Transformers para classificação de vídeos de sinais, validando a eficácia do paradigma para classificação temporal. Essa abordagem encontra variações criativas na literatura: \citeonline{alves:24} codificaram sequências temporais de \textit{landmarks} como imagens 2D para processamento por CNN, superando o estado da arte com menor custo de treinamento; \citeonline{costa-i3d:25} adotaram convoluções 3D (\textit{Inflated 3D ConvNet} --- I3D), que estendem os filtros convolucionais para a dimensão temporal e operam diretamente sobre vídeos RGB, atingindo 92,5\% de acurácia em Libras sem necessidade de extração de esqueleto. Em abordagem auto-supervisionada, \citeonline{fanucchi:24} exploraram o VideoMAE (\textit{Video Masked Autoencoder}), que aprende representações espaço-temporais ricas a partir de vídeos mascarados, alcançando até 84\% de acurácia em Libras com apenas 50 vídeos de treinamento por palavra --- resultado que evidencia o potencial de modelos pré-treinados para cenários com dados escassos. Essa estratégia de \textit{pipelining} entre extratores convolucionais e modeladores sequenciais é o fundamento da arquitetura adotada no LibrasVision, conforme detalhado na Seção \ref{sec:arquitetura}.
 
 \section{Modelos Avançados de Tradução de Sinais}
 
@@ -58,7 +99,18 @@ Uma limitação importante dos modelos de tradução de sinais em larga escala �
 
 \subsection{Tradução Multilingue}
 
-A escassez de dados é um desafio central no desenvolvimento de sistemas de tradução para línguas de sinais menos representadas. \citeonline{hamidullah:25} endereçaram esse problema com o SONAR-SLT, que emprega embeddings multimodais agnósticos à língua treinados em texto e fala de múltiplos idiomas para supervisionar a tradução de língua de sinais, demonstrando melhorias consistentes especialmente em cenários de poucos recursos.
+A escassez de dados rotulados é um dos principais obstáculos ao desenvolvimento de sistemas de reconhecimento e tradução para línguas de sinais menos representadas, como a Libras. Enquanto a ASL e a ISL contam com datasets de maior escala e comunidades de pesquisa estabelecidas, a Libras carece de corpora comparáveis --- lacuna documentada nas revisões sistemáticas de \citeonline{costa-slr:25} e \citeonline{silva-ia:25}. Nesse contexto, estratégias multilingues e de transferência de aprendizado ganham relevância como caminhos para aproveitar representações aprendidas em línguas de sinais com mais dados e adaptá-las a línguas com recursos escassos.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.80\textwidth]{images/transfer_learning_sl.png}
+    \caption{Transferência de aprendizado entre línguas de sinais: representações aprendidas em ASL/ISL são reutilizadas e refinadas (\textit{fine-tuning}) para Libras, reduzindo a necessidade de dados rotulados}
+    \label{fig:transfer_learning_sl}
+\end{figure}
+
+A abordagem de tradução bidirecional desenvolvida por \citeonline{jain:24} --- que converte tanto de língua de sinais para texto quanto de texto para sinais via avatar animado --- demonstra que arquiteturas multimodais podem ser projetadas para suportar múltiplas línguas de sinais com adaptações modulares. De forma similar, \citeonline{mdpi:25} propuseram um sistema híbrido CNN-Transformer para tradução bidirecional entre ASL e inglês cuja estrutura modular favorece a extensão para outros idiomas.
+
+No campo da tradução multilingue propriamente dita, \citeonline{maia:25} demonstraram que arquiteturas Transformer com embeddings de \textit{landmarks} extraídos via MediaPipe são capazes de generalizar representações semânticas de sinais entre diferentes contextos linguísticos. O avanço mais direto sobre o desafio de baixos recursos foi proposto por \citeonline{hamidullah:25} com o SONAR-SLT: o sistema emprega embeddings multimodais agnósticos à língua --- pré-treinados em texto e fala de dezenas de idiomas --- para supervisionar a tradução de língua de sinais sem depender de grandes corpora sinalizados, demonstrando melhorias consistentes especialmente em cenários de poucos dados. Essa linha de pesquisa é particularmente relevante para a Libras, cujo avanço tecnológico depende de estratégias que compensem a assimetria de recursos em relação às línguas de sinais mais estudadas.
 
 \section{Reconhecimento de Língua de Sinais: Contexto Internacional}
 
@@ -95,6 +147,7 @@ A análise da literatura permite identificar um campo em acelerada evolução, m
 As principais lacunas identificadas nas revisões sistemáticas \cite{costa-slr:25,silva-ia:25,silva-libras:25} incluem: (1) escassez de datasets de larga escala e multimodais para Libras, que cubram a diversidade de sinalizadores, regiões geográficas e variações de iluminação; (2) dificuldade em integrar características não-manuais (expressões faciais e movimentos de cabeça) como marcadores gramaticais nos modelos de reconhecimento; (3) limitações no reconhecimento de sinais contínuos em conversação natural, que é substancialmente mais complexo que o reconhecimento de sinais isolados; e (4) necessidade de maior atenção às implicações éticas do uso de dados sensíveis de pessoas surdas. Essas lacunas orientam as escolhas metodológicas e as delimitações do escopo do LibrasVision, descrito nas seções seguintes.
 
 \section{Arquitetura do Sistema}
+\label{sec:arquitetura}
 
 O sistema proposto foi estruturado em um pipeline dividido em etapas bem definidas, conforme ilustrado no diagrama apresentado na página 3 do documento. A arquitetura adotada segue o padrão estabelecido na literatura de maior desempenho: extração de landmarks via MediaPipe seguida de modelagem temporal via LSTM \cite{kamble:25,varshini:25,anithadevi:25,navendu:24,maia:25}.
 
