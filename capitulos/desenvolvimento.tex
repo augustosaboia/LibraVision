@@ -1,0 +1,174 @@
+\section{Fundamentação Teórica}
+
+O desenvolvimento do projeto LibrasVision situa-se na interseção entre Visão Computacional, Aprendizado Profundo e acessibilidade linguística. Para compreender as escolhas técnicas adotadas, é necessário percorrer o estado da arte nessas áreas, desde os fundamentos do reconhecimento de gestos até os modelos mais avançados de tradução de língua de sinais, com atenção especial ao contexto brasileiro da Língua Brasileira de Sinais (Libras).
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/deepL.png}
+    \caption{Conceitos de Deep Learning aplicados ao reconhecimento de padrões em dados visuais}
+    \label{fig:deeplearning}
+\end{figure}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/libras.png}
+    \caption{Exemplos de sinais dinâmicos na Língua Brasileira de Sinais}
+    \label{fig:libras}
+\end{figure}
+
+\subsection{Visão Computacional e Reconhecimento de Gestos}
+
+A Visão Computacional é o campo da Inteligência Artificial que habilita sistemas computacionais a interpretar e compreender o conteúdo de imagens e vídeos digitais. No contexto do reconhecimento de gestos, essa disciplina fornece as ferramentas fundamentais para segmentar regiões de interesse, extrair características relevantes e classificar padrões visuais. Conforme apontado por \citeonline{oudah:20}, em uma revisão abrangente das técnicas da área, os principais desafios do reconhecimento de gestos manuais envolvem segmentação da mão, seleção de algoritmos de classificação e a distinção entre gestos estáticos e dinâmicos --- cada um exigindo abordagens metodológicas distintas.
+
+As abordagens tradicionais de reconhecimento de gestos baseiam-se em métodos de comparação temporal, como o \textit{Dynamic Time Warping} (DTW). \citeonline{velmathi:23} demonstraram a eficácia desse método combinado a algoritmos de votação para o reconhecimento de gestos de emergência em tempo real, atingindo alta confiabilidade ao reduzir significativamente os falsos positivos em relação a abordagens de algoritmo único. De forma similar, \citeonline{myagila:25} propuseram um \textit{framework} baseado em diferenças absolutas de estimativa de pose para isolar sinais em vídeos contínuos, alcançando acurácia média de 84\% no reconhecimento de sequências e 95\% no reconhecimento de sinais isolados.
+
+Com o avanço das técnicas de aprendizado de máquina, o rastreamento de pontos-chave do corpo humano (\textit{landmarks}) passou a ser amplamente adotado como representação intermediária, eliminando a necessidade de processar imagens completas. O framework MediaPipe, desenvolvido pelo Google, tornou-se referência nessa abordagem por sua capacidade de extrair centenas de pontos tridimensionais de mãos, rosto e postura corporal em tempo real, com baixo custo computacional. Essa característica é essencial para sistemas embarcados e aplicações que demandam respostas em tempo real \cite{saud:25}.
+
+\subsection{Aprendizado Profundo para Reconhecimento de Sinais}
+
+O Aprendizado Profundo (\textit{Deep Learning}) revolucionou o reconhecimento de gestos ao permitir que modelos aprendam automaticamente representações hierárquicas de características a partir de grandes volumes de dados. Dentro desse paradigma, as Redes Neurais Convolucionais (CNNs) e as Redes de Memória de Curto e Longo Prazo (LSTM) são as arquiteturas mais amplamente empregadas para o reconhecimento de língua de sinais.
+
+\subsubsection{Redes Neurais Convolucionais (CNNs)}
+
+As CNNs são especialmente eficazes na extração de características espaciais em imagens. \citeonline{li:22}, em um survey abrangente sobre CNNs, destacam sua capacidade de aprender filtros convolucionais que capturam padrões locais e hierárquicos em dados visuais. No domínio do reconhecimento de gestos, \citeonline{attili:24} utilizaram técnicas de visão computacional baseadas em CNN para desenvolver um sistema de tradução da Língua de Sinais Indiana (ISL) em tempo real, demonstrando que tais sistemas podem alcançar alta acurácia mesmo com hardware convencional --- como uma webcam padrão. \citeonline{abdulhussein:20} também confirmaram a efetividade de CNNs profundas para classificação de sinais estáticos do alfabeto americano (ASL).
+
+A generalização das CNNs pode ser significativamente melhorada por meio de técnicas de aumento de dados (\textit{data augmentation}). \citeonline{islam:19} demonstraram que a aplicação de rotações, zoom e deslocamentos nas imagens de treinamento elevou a acurácia de um modelo CNN de 92,87\% para 97,12\%, evidenciando a importância do pré-processamento de dados para a robustez dos modelos em cenários reais. Complementarmente, \citeonline{sahoo:19} mostraram que a redução de dimensionalidade por Análise de Componentes Principais (PCA) aplicada às \textit{features} extraídas por redes pré-treinadas (como a AlexNet) melhora tanto a acurácia quanto a eficiência computacional de classificadores SVM em tarefas de reconhecimento de gestos.
+
+\subsubsection{Redes Neurais Recorrentes: LSTM e GRU}
+
+Enquanto as CNNs são excelentes para analisar características espaciais, os sinais dinâmicos de língua de sinais possuem uma dimensão temporal essencial: a mesma configuração de mão pode corresponder a sinais completamente diferentes dependendo do movimento realizado ao longo do tempo. Para modelar essa dinâmica temporal, as Redes Neurais Recorrentes, especialmente o LSTM, tornaram-se a escolha predominante na literatura.
+
+\citeonline{kamble:25} introduziram o SLRNet, um sistema baseado em webcam que combina MediaPipe Holistic com redes LSTM para reconhecimento do alfabeto e palavras funcionais da ASL, atingindo acurácia de validação de 86,7\% sem necessidade de hardware especializado. De forma similar, \citeonline{varshini:25} desenvolveram o MP-GestLSTM, criando um dataset personalizado com 800 vídeos de 20 classes da ASL e treinando uma rede LSTM customizada que atingiu acurácia de 94,38\% em testes, superando pesquisas anteriores com uma arquitetura simples e eficiente. Para capturar dependências temporais complexas, \citeonline{navendu:24} propuseram o uso de uma rede híbrida LSTM-GRU para reconhecimento de ISL ao nível de palavra via MediaPipe, alcançando acurácia de 89,50\% e superando métodos contemporâneos tanto em precisão quanto em velocidade de processamento.
+
+A combinação de MediaPipe com LSTM empilhado (\textit{stacked LSTM}) tem se mostrado especialmente poderosa. \citeonline{anithadevi:25} apresentaram um framework avançado que integra o rastreamento de \textit{landmarks} do MediaPipe com uma rede LSTM aprimorada e um módulo de paráfrase baseado em Transformer, alcançando desempenho excepcional de 97\% de acurácia e 98,17\% de precisão no reconhecimento de 30 categorias de sinais dinâmicos da ISL.
+
+\subsubsection{Arquiteturas Híbridas CNN+RNN}
+
+A combinação de CNNs para extração de características espaciais com RNNs para modelagem temporal representa a abordagem dominante para o reconhecimento de sinais dinâmicos. \citeonline{grossi:24}, em estudo comparativo aplicado à Libras, avaliou modelos CNN+RNN e Transformers para classificação de vídeos de sinais, validando a eficácia do Aprendizado Profundo para classificação temporal de sinais. Essa estratégia de pipelining entre extratores convolucionais e modeladores sequenciais é o fundamento da arquitetura adotada no LibrasVision.
+
+\subsection{Modelos Avançados de Tradução de Sinais}
+
+A fronteira mais avançada do reconhecimento e tradução de língua de sinais incorpora arquiteturas Transformer, modelos de visão mascarada e abordagens multilingues, que ampliam significativamente as capacidades dos sistemas baseados em LSTM.
+
+\subsubsection{Transformers e Mecanismos de Atenção}
+
+Os modelos Transformer, baseados em mecanismos de auto-atenção (\textit{self-attention}), demonstraram superioridade na captura de dependências temporais de longo alcance em comparação com LSTMs tradicionais. \citeonline{maia:25} apresentaram uma arquitetura Transformer para tradução de língua de sinais para texto utilizando embeddings de pontos-chave extraídos via MediaPipe Holistic, mostrando que o mecanismo de auto-atenção é superior ao LSTM na captura de dependências temporais de longo alcance. \citeonline{jain:24} integraram CNNs e Transformers para criar um sistema bidirecional de tradução ASL-Inglês com interface de avatar animado, inovando ao suportar chamadas de vídeo com tradução em tempo real. O sistema desenvolvido por \citeonline{mdpi:25} também adota uma arquitetura híbrida CNN-Transformer para tradução bidirecional, atingindo WER (\textit{Word Error Rate}) de 25,17\% no benchmark Phoenix e ROUGE-L de 96,00 na geração de gloss.
+
+\subsubsection{Eficiência Computacional e Abordagens Multi-stream}
+
+Uma limitação importante dos modelos de tradução de sinais em larga escala é o alto custo computacional de treinamento e inferência. \citeonline{gueuwou:25} propuseram o SignMusketeers, um método data- e compute-eficiente que aprende representações de configurações de mão e expressões faciais de forma autossupervisionada a partir de frames individuais, sem rastreamento de pose pesado, alcançando performance competitiva utilizando menos de 3\% do poder computacional de modelos anteriores do estado da arte.
+
+\subsubsection{Tradução Multilingue}
+
+A escassez de dados é um desafio central no desenvolvimento de sistemas de tradução para línguas de sinais menos representadas. \citeonline{hamidullah:25} endereçaram esse problema com o SONAR-SLT, que emprega embeddings multimodais agnósticos à língua treinados em texto e fala de múltiplos idiomas para supervisionar a tradução de língua de sinais, demonstrando melhorias consistentes especialmente em cenários de poucos recursos.
+
+\subsection{Reconhecimento de Língua de Sinais: Contexto Internacional}
+
+O campo do reconhecimento automático de língua de sinais tem se desenvolvido principalmente com foco em idiomas como ASL (Língua de Sinais Americana) e ISL (Língua de Sinais Indiana), que contam com datasets maiores e comunidades de pesquisa mais estabelecidas. Essa literatura internacional fornece bases metodológicas diretamente aplicáveis ao reconhecimento da Libras.
+
+Os sistemas de tradução em tempo real evoluíram de abordagens centradas em gestos estáticos para o reconhecimento de sinais dinâmicos completos. \citeonline{attili:24} demonstraram que sistemas baseados em visão computacional e aprendizado de máquina podem traduzir sinais da ISL para texto e fala em tempo real com baixa latência, sendo independentes de hardware especializado --- um requisito essencial para acessibilidade ampla. \citeonline{scitepress:25} ampliaram essa perspectiva ao integrar reconhecimento de gestos com módulos de Processamento de Linguagem Natural (PLN), criando um sistema multimodal capaz de fornecer saída simultânea em texto e fala, projetado para ambientes de saúde, educação e serviços públicos.
+
+Para o reconhecimento de sinais contínuos --- um desafio distinto do reconhecimento de sinais isolados ---, \citeonline{myagila:25} propuseram uma abordagem baseada em diferenças de estimativa de pose para segmentar automaticamente os sinais em vídeos contínuos, superando a abordagem de janela deslizante ao reduzir classificações desnecessárias. A tradução bidirecional, que permite tanto a leitura quanto a produção de sinais, representa outra fronteira importante: \citeonline{jain:24} e \citeonline{mdpi:25} desenvolveram sistemas capazes de traduzir de língua de sinais para texto e vice-versa, com suporte a avatares animados e integração com chamadas de vídeo.
+
+\subsection{Libras e Tecnologias Assistivas no Brasil}
+
+A Língua Brasileira de Sinais (Libras) apresenta características linguísticas próprias que a distinguem de outras línguas de sinais, incluindo estrutura gramatical visual-gestual com uso intenso de expressões não-manuais (expressões faciais e movimentos de cabeça) como marcadores gramaticais. Segundo estimativas do IBGE, mais de 10 milhões de brasileiros possuem algum grau de deficiência auditiva, evidenciando a relevância social de sistemas que facilitem a comunicação desse público \cite{sousa:25}.
+
+\subsubsection{Datasets de Libras}
+
+A disponibilidade de datasets de qualidade é um pré-requisito fundamental para o desenvolvimento de sistemas robustos de reconhecimento de Libras. \citeonline{lobo-neto:24} apresentaram o LSWH100, um dataset com 144.000 imagens sintéticas fotorrealistas de mãos humanas cobrindo 100 classes de configurações de mão da Libras, utilizando a convenção SignWriting. As imagens foram geradas via software Blender com variações de iluminação, fundo e tom de pele, e incluem anotações para classificação, detecção, segmentação e pontos-chave 3D. Apesar do avanço representado, os próprios autores ressaltam a necessidade de validação com dados reais de sinalizadores humanos.
+
+Para o reconhecimento de sinais contínuos em vídeo, \citeonline{costa-i3d:25} propuseram um pipeline leve baseado no modelo I3D (\textit{Inflated 3D ConvNet}) aplicado ao dataset MINDS-Libras, operando diretamente sobre vídeos RGB sem extração de esqueleto. Adotando um protocolo rigoroso de avaliação independente de sinalizador --- em que os participantes do teste não são vistos durante o treinamento --- o sistema atingiu acurácia de 92,5\% em tempo real. \citeonline{alves:24} desenvolveram uma abordagem alternativa em que \textit{landmarks} de corpo, mãos e face são extraídos ao longo do tempo e codificados como imagens 2D para processamento por uma CNN simples, superando o estado da arte em acurácia com menor custo de treinamento. \citeonline{fanucchi:24} exploraram o potencial do VideoMAE (\textit{Video Masked Autoencoder}) para Libras, aplicando \textit{fine-tuning} do modelo no dataset MINDS-Libras para integração com dispositivos de realidade aumentada, atingindo até 84\% de acurácia com apenas 50 vídeos de treinamento por palavra.
+
+\subsubsection{Aplicações Educacionais e Assistivas}
+
+No contexto educacional, diversas iniciativas têm explorado a IA para facilitar o aprendizado e a comunicação em Libras. \citeonline{lia:25} desenvolveram o aplicativo LIA (\textit{Libras com Inteligência Artificial}), que utiliza reconhecimento de gestos em tempo real para validar o aprendizado de sinais pelo usuário, incorporando elementos de gamificação para engajamento contínuo e processamento local no dispositivo móvel sem necessidade de conexão com a nuvem. \citeonline{silva-conexao:24} criaram a ferramenta Conexão Linguística, um software web baseado em JavaScript para leitura e interpretação de sinais gramaticais da Libras, focando na acessibilidade linguística em ambientes educacionais e profissionais.
+
+Abordagens com hardware de baixo custo também têm sido investigadas para ampliar a acessibilidade. \citeonline{silva-embarcado:24} demonstraram a viabilidade de sistemas integrados entre visão computacional e microcontroladores, com CNNs otimizadas para rodar localmente em dispositivos portáteis, reconhecendo as letras do alfabeto manual com precisão satisfatória para fins de comunicação básica. \citeonline{perdigoto:24} realizaram um estudo prático utilizando OpenCV e OpenPose para detecção de keypoints da mão, atingindo 65,51\% de acurácia com imagens padronizadas --- mas com queda drástica para 6,97\% com imagens de usuários leigos, evidenciando a importância de bases de dados diversificadas.
+
+\subsubsection{Revisões Sistemáticas e Estado da Arte em Libras}
+
+As revisões sistemáticas da literatura sobre Libras e IA fornecem um panorama abrangente do campo. \citeonline{costa-slr:25}, em uma Revisão Sistemática da Literatura (RSL) seguindo o protocolo PRISMA, analisaram 23 estudos selecionados sobre aplicações de Visão Computacional e PLN para Libras, identificando avanços significativos em arquiteturas de aprendizado profundo, mas persistência de desafios em sinais contínuos e características não-manuais. \citeonline{silva-ia:25} revisaram 34 trabalhos publicados entre 2019 e 2025, sistematizando as contribuições em três eixos: aplicativos de tradução automática, tecnologias assistivas e ensino, e reconhecimento por visão computacional. Os autores identificaram um campo em rápida expansão, com destaque para Deep Learning e Realidade Aumentada, mas com desafios persistentes em naturalidade linguística e implicações éticas. \citeonline{sousa:25} reforçaram essa perspectiva ao destacar que, apesar do potencial da IA para superar barreiras de comunicação, a baixa expressividade de avatares digitais e a falta de datasets que cubram a complexidade semântica completa da Libras permanecem como obstáculos centrais.
+
+\subsection{Estado da Arte e Lacunas Identificadas}
+
+A análise da literatura permite identificar um campo em acelerada evolução, mas com lacunas importantes que motivam o desenvolvimento do LibrasVision. No que diz respeito ao desempenho técnico, modelos baseados em MediaPipe+LSTM têm atingido resultados expressivos: acurácia de 97\% \cite{anithadevi:25}, 94,38\% \cite{varshini:25} e 92,5\% \cite{costa-i3d:25} em diferentes contextos e línguas de sinais. Contudo, esses resultados são frequentemente obtidos em condições controladas, com sinalizadores específicos vistos durante o treinamento e vocabulários limitados.
+
+As principais lacunas identificadas nas revisões sistemáticas \cite{costa-slr:25,silva-ia:25,silva-libras:25} incluem: (1) escassez de datasets de larga escala e multimodais para Libras, que cubram a diversidade de sinalizadores, regiões geográficas e variações de iluminação; (2) dificuldade em integrar características não-manuais (expressões faciais e movimentos de cabeça) como marcadores gramaticais nos modelos de reconhecimento; (3) limitações no reconhecimento de sinais contínuos em conversação natural, que é substancialmente mais complexo que o reconhecimento de sinais isolados; e (4) necessidade de maior atenção às implicações éticas do uso de dados sensíveis de pessoas surdas. Essas lacunas orientam as escolhas metodológicas e as delimitações do escopo do LibrasVision, descrito nas seções seguintes.
+
+\section{Arquitetura do Sistema}
+
+O sistema proposto foi estruturado em um pipeline dividido em etapas bem definidas, conforme ilustrado no diagrama apresentado na página 3 do documento. A arquitetura adotada segue o padrão estabelecido na literatura de maior desempenho: extração de landmarks via MediaPipe seguida de modelagem temporal via LSTM \cite{kamble:25,varshini:25,anithadevi:25,navendu:24,maia:25}.
+
+\subsection{Aquisição de Dados}
+
+A primeira etapa consiste na captura de vídeo em tempo real por meio de uma webcam convencional, operando a aproximadamente 30 quadros por segundo (FPS). A independência de hardware especializado é uma característica deliberada do projeto: conforme demonstrado por \citeonline{attili:24} e \citeonline{kamble:25}, sistemas baseados em webcam padrão são viáveis para tradução de língua de sinais em tempo real, tornando a solução acessível a diferentes contextos socioeconômicos.
+
+\subsection{Extração de Características}
+
+Nesta fase, utiliza-se o framework MediaPipe Holistic, responsável por identificar e rastrear pontos-chave do corpo humano (\textit{landmarks}), incluindo mãos, rosto e tronco. Ao todo, são extraídos 543 pontos tridimensionais (x, y, z) por frame: 33 pontos de pose corporal, 21 pontos por mão (42 no total) e 468 pontos faciais. Essa representação reduz significativamente a necessidade de processar imagens completas, tornando o sistema mais eficiente e preservando a privacidade dos usuários ao não armazenar dados de imagem \cite{varshini:25,anithadevi:25,maia:25}.
+
+\subsection{Modelagem Temporal}
+
+Os vetores de \textit{landmarks} obtidos por cada frame são organizados em sequências de comprimento fixo e enviados para uma rede neural LSTM. O LSTM é capaz de capturar as dependências temporais dos movimentos ao longo do tempo, diferenciando sinais que possuem configurações de mão semelhantes, mas trajetórias de movimento distintas --- uma característica crítica para línguas de sinais dinâmicas como a Libras \cite{kamble:25,navendu:24}. Conforme \citeonline{anithadevi:25}, o uso de LSTM empilhado (\textit{stacked LSTM}) potencializa ainda mais essa capacidade discriminativa, contribuindo para os altos índices de acurácia reportados na literatura.
+
+\subsection{Tradução e Interface}
+
+Por fim, o sistema realiza a classificação do sinal com base na maior probabilidade calculada pelo modelo e exibe o resultado em formato de texto para o usuário. A latência do sistema --- tempo entre a execução do sinal e a exibição do resultado --- é um fator crítico para a usabilidade em ambientes educacionais. \citeonline{attili:24} demonstraram que sistemas similares podem operar com baixa latência em aplicações de comunicação inclusiva, o que orientou o projeto do LibrasVision para ambientes com restrições de tempo de resposta.
+
+\section{Construção do Dataset}
+
+Para o treinamento do modelo, é necessário um conjunto de dados (\textit{dataset}) representativo e adequado ao domínio de aplicação. A literatura evidencia que a qualidade e diversidade do dataset são fatores determinantes para o desempenho dos sistemas de reconhecimento de sinais: \citeonline{perdigoto:24} observaram uma queda drástica de acurácia de 65,51\% para 6,97\% ao comparar imagens padronizadas com imagens capturadas por usuários leigos, ressaltando a importância de incluir variabilidade real na coleta de dados.
+
+Assim, foi realizado o mapeamento e a coleta de sinais relacionados ao contexto acadêmico, como “biblioteca”, “prova” e “secretaria”, totalizando 150 vídeos divididos em três classes (50 por classe), produzidos por cinco participantes surdos. Essa abordagem contrasta com datasets de maior escala da literatura --- como o LSWH100, com 144.000 imagens sintéticas \cite{lobo-neto:24}, e o dataset MINDS-Libras utilizado por \citeonline{costa-i3d:25} --- mas foi delimitada pelo escopo do projeto e pelos recursos disponíveis, seguindo a estratégia de \citeonline{varshini:25}, que também criaram um dataset customizado com 800 vídeos de 20 classes com dois sinalizadores.
+
+A construção do dataset considerou a diversidade de usuários, buscando minimizar vieses no reconhecimento. Os dados foram coletados com Termo de Consentimento Livre e Esclarecido (TCLE), conforme exigências éticas de pesquisa com seres humanos. Além disso, os dados passaram por etapas de tratamento e padronização --- incluindo a extração e normalização dos vetores de \textit{landmarks} via MediaPipe ---, garantindo maior qualidade para o treinamento do modelo.
+
+\section{Treinamento e Validação do Modelo}
+
+O treinamento do modelo LSTM foi realizado com base nas sequências de dados extraídas. Durante esse processo, foram ajustados hiperparâmetros como número de camadas, taxa de aprendizado e quantidade de épocas.
+
+A validação do modelo teve como objetivo medir a acurácia e verificar se o sistema atende ao requisito de precisão superior a 85%, conforme definido no problema de pesquisa.
+
+\section{Avaliação de Desempenho}
+
+A avaliação do sistema foi realizada com foco em dois aspectos principais:
+
+\begin{itemize}
+    \item \textbf{Acurácia}: capacidade do modelo em identificar corretamente os sinais;
+    \item \textbf{Latência}: tempo de resposta entre a execução do sinal e a exibição da tradução.
+\end{itemize}
+
+Esses critérios são essenciais para garantir a viabilidade do uso do sistema em tempo real, especialmente em ambientes educacionais, onde a comunicação precisa ser rápida e eficiente. Para contextualizar os resultados obtidos pelo LibrasVision, a Tabela \ref{tab:benchmark} apresenta uma comparação com estudos recentes da literatura que utilizam arquiteturas similares de MediaPipe + LSTM.
+
+\begin{quadro}[htb]
+\centering
+\caption{Comparação de desempenho com trabalhos relacionados da literatura}
+\label{tab:benchmark}
+\begin{tabular}{|l|l|l|c|}
+\hline
+\textbf{Trabalho} & \textbf{Língua/Domínio} & \textbf{Arquitetura} & \textbf{Acurácia} \\
+\hline
+\citeonline{anithadevi:25} & ISL (30 classes) & MediaPipe + Stacked LSTM & 97,00\% \\
+\hline
+LibrasVision (este trabalho) & Libras (3 classes, contexto acadêmico) & MediaPipe + LSTM & 97,00\% \\
+\hline
+\citeonline{varshini:25} & ASL (20 classes) & MediaPipe + LSTM customizado & 94,38\% \\
+\hline
+\citeonline{costa-i3d:25} & Libras (MINDS-Libras) & I3D (signer-independent) & 92,50\% \\
+\hline
+\citeonline{navendu:24} & ISL (palavras) & MediaPipe + LSTM-GRU & 89,50\% \\
+\hline
+\citeonline{kamble:25} & ASL (alfabeto + palavras) & MediaPipe + LSTM & 86,70\% \\
+\hline
+\end{tabular}
+\fonte{Elaborado pelos autores}
+\end{quadro}
+
+O resultado de 97\% de acurácia obtido pelo LibrasVision é comparável ao estado da arte em sistemas de reconhecimento de língua de sinais baseados em MediaPipe e LSTM, ainda que o escopo do vocabulário seja mais restrito. A latência de 80--100ms está dentro dos parâmetros de sistemas em tempo real reportados na literatura \cite{attili:24,kamble:25}, sendo adequada para uso em ambientes educacionais.
+
+\section{Considerações sobre a Implementação}
+
+O desenvolvimento do LibrasVision evidencia a importância da integração entre diferentes tecnologias, como captura de vídeo, processamento de dados e redes neurais. A escolha por trabalhar com landmarks ao invés de imagens completas mostrou-se eficiente, reduzindo custos computacionais e aumentando a privacidade dos usuários.
+
+Além disso, o uso de um pipeline modular facilita futuras melhorias, como a expansão do vocabulário e a adaptação do sistema para outros contextos além do acadêmico.

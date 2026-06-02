@@ -1,0 +1,250 @@
+% --------------------------------------------------------
+% LaTeX definicoes para o TCC
+% Faculdade UDF
+% --------------------------------------------------------
+
+% --------------------------------------------------------
+% Pacotes
+% --------------------------------------------------------
+\usepackage[alf]{abntex2cite} % Padrão bibliográfico
+\usepackage{changepage} % Pacote para ajustar margens
+\usepackage{soul}       % Pacote para maximizar letras
+\usepackage{graphicx} % adicionar imagens
+% babel e inputenc já carregados no TCC.tex — não recarregar aqui
+\usepackage[protrusion=true,expansion=true]{microtype} % obter melhor tipografia
+\usepackage{fancyhdr} % definir cabeçalhos e rodapés
+\usepackage{listings} % listagens
+\usepackage{color,colortbl,multirow}
+\usepackage{float} % Imagens flutuantes
+\usepackage{array} % Para usar tabelas
+\usepackage{mathtools}
+\usepackage{url} % codigo para as URLs
+\usepackage{ulem}
+\usepackage{tocloft}
+\usepackage{titletoc}
+\usepackage{titlesec}
+\usepackage{ragged2e}
+\usepackage{tikz,lipsum,lmodern}
+\usepackage[most]{tcolorbox}
+\usepackage{lastpage}
+\usepackage{indentfirst}
+\usepackage{wrapfig} % Imagens que se cruzam com texto
+\usepackage[a4paper, inner=1.5cm, outer=2cm, top=2cm, bottom=3cm, bindingoffset=1cm]{geometry}
+\usepackage{lettrine}				% letras capitulares
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage{acronym}
+
+% Seleciona Linguagem padrão
+\selectlanguage{brazil}
+
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing 
+
+\makepagestyle{abntbookheadings}
+\makeevenhead{abntbookheadings}{\ABNTEXfontereduzida\thepage}{}{\ABNTEXfontereduzida\textit\leftmark}
+\makeoddhead{abntbookheadings}{\ABNTEXfontereduzida\textit\rightmark}{}{\ABNTEXfontereduzida\thepage}
+\makeheadrule{abntbookheadings}{\textwidth}{\normalrulethickness}
+
+% --------------------------------------------------------
+% Citação
+% --------------------------------------------------------
+\newenvironment{myquotation}{%
+  \vspace{-10pt} 
+  \begin{adjustwidth}{5cm}{-0.5cm}\begin{quotation}%
+}{%
+  \end{quotation}\end{adjustwidth}%
+}
+
+% --------------------------------------------------------
+% Acerta a Seção
+% --------------------------------------------------------
+\titleformat{\section}[block]{\bfseries\MakeUppercase}{\textbf{\thesection}}{1em}{\MakeUppercase}
+
+\renewcommand{\listfigurename}{LISTA DE FIGURAS} % Personalize o título da lista de figuras
+
+% --------------------------------------------------------
+% Fonts
+% --------------------------------------------------------
+\RequirePackage{times}
+
+\renewcommand{\normalsize}{\@setfontsize\normalsize\@xiipt\@xivpt}
+\newcommand{\XIIIPT}{\@setfontsize\xiiipt{13}{17}}
+\newcommand{\XVIPT}{\@setfontsize\xvipt{16}{20}}
+
+% --------------------------------------------------------
+% Novos Comandos
+% --------------------------------------------------------
+\newcounter{instn}
+\setcounter{instn}{1}
+\newcommand{\instnum}{\arabic{instn}}
+\newcommand{\inst}[1]{\ensuremath{^{#1}}}
+\newcommand{\nextinstitute}{\\\mbox{}\\[-6pt] \addtocounter{instn}{1}\inst{\instnum}}
+\newcommand{\email}[1]{\\\mbox{}\\[-6pt]\footnotesize\texttt{#1}}
+\renewcommand{\and}{, }
+              
+% --------------------------------------------------------
+% Primeira Página
+% --------------------------------------------------------
+\pagestyle{empty}
+
+\def\coordenacao#1{\gdef\@coordenacao{#1}}
+\def\titulacao#1{\gdef\@titulacao{#1}}
+\def\subtitle#1{\gdef\@subtitle{#1}}
+\def\cidade#1{\gdef\@cidade{#1}}
+\def\ano#1{\gdef\@ano{#1}}
+\def\orientador#1{\gdef\@orientador{#1}}
+
+\def\@maketitle{
+    % Capa
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.2\textwidth]{images/logo}
+	\end{figure}
+	\begin{center}
+		{\normalsize \textbf{CENTRO UNIVERSITÁRIO DO DISTRITO FEDERAL -- UDF}\par}
+   	    \vspace*{-5pt}
+		{\normalsize \textbf{\MakeUppercase{\@coordenacao}}\par}
+   	    \vspace*{50pt}
+		{\normalsize \textbf{\begin{tabular}[t]{c}\@author\end{tabular}}\par}
+   	    \vspace*{130pt}
+		{\XVIPT\MakeUppercase{\@title}\par}
+		{\XVIPT\MakeUppercase{\@subtitle}\par}
+	    \vglue 60pt plus 30pt minus 3pt
+        \vspace*{\fill}
+		{\XVIPT\MakeUppercase\@cidade \\ \@ano \par}
+	\end{center}\par
+
+	\newpage
+    % Autores
+	\begin{center}
+		{\fontsize{14}{20}\selectfont \textbf{\@author}\par}
+   	    \vspace*{130pt}
+		{\XVIPT\@title\par}
+		{\XVIPT\@subtitle\par}
+	\end{center}\par	
+ 	\vspace*{130pt}
+	\begin{adjustwidth}{6cm}{-1cm} % Ajustar a margem à direita
+		\noindent Trabalho de conclusão de curso apresentado à \@coordenacao, do Centro Universitário do Distrito Federal - UDF, como requisito parcial para obtenção do grau de bacharel / tecnólogo em \@titulacao. \\
+   	    \\
+		\noindent Orientador: \@orientador \\
+	\end{adjustwidth}
+    \vspace*{\fill}
+	\begin{center}
+		{\XVIPT\MakeUppercase\@cidade \\ \@ano\par}
+	\end{center}\par
+}
+
+\renewcommand{\maketitle}{%
+  \@maketitle%
+  \thispagestyle{empty}%
+}
+
+\newenvironment{dedicatoria2}[1]{%
+  \chapter*{#1}%
+  \begin{adjustwidth}{6cm}{0cm} % Ajusta a margem esquerda para 3cm
+  \vspace*{\fill} % Move o texto para o final da página
+}{%
+  \vspace*{\fill} % Move o texto para o final da página
+  \end{adjustwidth}
+}
+
+\newenvironment{agradecimento}[1]{%
+  \chapter*{#1}%
+}{%
+  \par
+}
+
+\newenvironment{resumo2}{%
+    \chapter*{Resumo}
+	\list{}{\advance\topsep by6pt\relax%\small
+		\leftmargin=0cm
+		\labelwidth=\z@
+		\listparindent=\z@
+		\itemindent\listparindent
+		\rightmargin\leftmargin}\item[\hskip\labelsep
+	\bfseries\itshape]\itshape}%
+{\endlist}
+
+\renewenvironment{abstract}{%
+    \chapter*{Abstract}
+	\list{}{\advance\topsep by6pt\relax%\small
+		\leftmargin=0cm
+		\labelwidth=\z@
+		\listparindent=\z@
+		\itemindent\listparindent
+		\rightmargin\leftmargin}\item[\hskip\labelsep
+	\bfseries\itshape]\itshape}%
+{\endlist}
+
+% --------------------------------------------------------
+% Espaçamento dos Parágrafos
+% --------------------------------------------------------
+\setlength{\parindent}{5em}
+\setlength{\parskip}{1em}
+
+% --------------------------------------------------------
+% Cabeçalhos e Rodapés
+% --------------------------------------------------------
+\pagestyle{fancy}
+
+% --------------------------------------------------------
+% Definição para as caixas de listagens
+% --------------------------------------------------------
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstset {
+	aboveskip=3mm,
+	backgroundcolor=\color{backcolour},
+	basicstyle={\small\ttfamily},
+	belowskip=3mm,
+	breaklines=true,
+	breakatwhitespace=true,
+	columns=flexible,
+	commentstyle=\textit,
+	frame=tb,
+	keepspaces=true,
+	keywordstyle=\color{blue}\bfseries,
+	language=Java, % Python, HTML, CSS
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{codegray},
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=3,
+	literate=%
+	{á}{{\'a}}1
+	{é}{{\'e}}1
+	{í}{{\'i}}1
+	{ó}{{\'o}}1
+	{ú}{{\'u}}1
+	{ê}{{\^e}}1
+	{ã}{{\~a}}1
+	{õ}{{\~o}}1
+	{ç}{{\c{c}}}1          
+	{Á}{{\'A}}1
+	{É}{{\'E}}1
+	{Í}{{\'I}}1
+	{Ó}{{\'O}}1
+	{Ú}{{\'U}}1
+	{Ê}{{\^E}}1
+	{Ã}{{\~A}}1
+	{Õ}{{\~O}}1
+	{Ç}{{\c{C}}}1 
+}
+
+% Definições para Tabela
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{1.4}
+
+\makepagestyle{abntarticleheadings}
+\makeevenhead{abntarticleheadings}{}{}{\thepage}
+\makeoddhead{abntarticleheadings}{}{}{\thepage}
+
+\renewcommand{\textual}{%
+	\cleardoublepage%
+	\pagestyle{abntbookheadings}%
+}

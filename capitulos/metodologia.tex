@@ -1,0 +1,47 @@
+% capitulos/metodologia.tex
+
+Esta pesquisa classifica-se como \textbf{aplicada} quanto à sua natureza, pois visa desenvolver uma solução tecnológica concreta para um problema social identificado. Quanto aos objetivos, caracteriza-se como \textbf{exploratória e experimental}, uma vez que investiga a aplicabilidade de modelos de \textit{Pose Estimation} aliados a redes neurais recorrentes no reconhecimento de sinais dinâmicos de Libras, avaliando seu desempenho em cenário controlado. A pesquisa é conduzida no Brasil, especificamente em contexto universitário em Brasília, Distrito Federal, durante o período de fevereiro a junho de 2026 \cite{attili:24, jain:24}.
+
+O desenvolvimento do projeto foi organizado nas seguintes etapas:
+
+\section{Revisão Bibliográfica}
+
+A primeira etapa consistiu no levantamento e análise da literatura existente sobre reconhecimento de línguas de sinais, visão computacional e aprendizado profundo. Foram consultadas bases de dados como IEEE Xplore e Google Scholar, com foco em trabalhos publicados entre 2018 e 2024 \cite{li:22, abdulhussein:20, dockens:18, wang:24}.
+
+Os critérios de inclusão adotados foram: (i) publicações em inglês ou português; (ii) trabalhos com resultados experimentais mensuráveis; (iii) abordagens baseadas em aprendizado de máquina ou aprendizado profundo aplicadas ao reconhecimento de gestos ou línguas de sinais.
+
+\section{Definição do Escopo e Coleta de Dados}
+
+Serão selecionados sinais de Libras relacionados ao vocabulário acadêmico, como ``biblioteca'', ``prova'' e ``secretaria'', por serem de uso frequente e relevante no contexto universitário. A coleta de dados será realizada com 4 voluntários em ambiente controlado, com webcam posicionada frontalmente, garantindo enquadramento que capture completamente o corpo acima da cintura e diversidade em termos de perfis físicos e condições de iluminação. Cada sinal será gravado em múltiplas sequências de 30 quadros a 30 FPS, gerando um volume de dados suficiente para o treinamento supervisionado do modelo. A duração total da coleta está estimada em 3 meses. Os dados serão anonimizados e armazenados localmente, respeitando princípios de privacidade dos participantes.
+
+\section{Implementação do Pipeline}
+
+O pipeline será desenvolvido em Python, utilizando as seguintes tecnologias:
+
+\begin{itemize}
+    \item \textbf{OpenCV}: captura e processamento de \textit{frames} de vídeo em tempo real;
+    \item \textbf{MediaPipe Holistic}: extração de \textit{landmarks} tridimensionais de mãos, rosto e tronco;
+    \item \textbf{TensorFlow/Keras}: construção e treinamento da rede neural LSTM;
+    \item \textbf{NumPy}: manipulação e organização das sequências de dados.
+\end{itemize}
+
+A escolha por trabalhar com \textit{landmarks} ao invés de imagens completas reduz o custo computacional e permite a execução em hardware convencional, tornando o sistema acessível a instituições sem infraestrutura especializada.
+
+\section{Treinamento e Validação do Modelo}
+
+O modelo LSTM será treinado com os dados coletados, utilizando divisão na proporção de 80\% para treino e 20\% para validação. Os hiperparâmetros ajustados incluirão número de camadas, taxa de aprendizado (\textit{learning rate}) e número de épocas. O critério de aceitação estabelecido será acurácia superior a 85\% na base de validação. Após conclusão do treinamento, a análise dos resultados será conduzida através de métricas quantitativas --- acurácia global, precisão, revogação (\textit{recall}) e F1-score para cada classe de sinal --- complementadas por matriz de confusão para identificar quais sinais são frequentemente confundidos entre si. Além disso, será realizada análise qualitativa incluindo inspeção visual de padrões de erro e cenários de falha do sistema, permitindo identificar causas-raiz de falhas e orientar futuras melhorias.
+
+\section{Avaliação do Sistema}
+
+O sistema será avaliado segundo dois critérios principais:
+
+\begin{itemize}
+    \item \textbf{Acurácia}: percentual de sinais corretamente classificados pelo modelo em relação ao total de amostras do conjunto de teste;
+    \item \textbf{Latência}: intervalo de tempo entre a execução do sinal pelo usuário e a exibição da tradução em texto na interface.
+\end{itemize}
+
+Os testes serão realizados com usuários que não participarem da etapa de coleta, de modo a verificar a robustez do modelo frente a variações não vistas durante o treinamento. Essa abordagem garante maior validade externa aos resultados obtidos \cite{attili:24}.
+
+\section{Limitações do Estudo}
+
+O mapeamento antecipado das limitações é essencial para delimitar o escopo do projeto e orientar trabalhos futuros. O \textit{dataset} construído abrange apenas sinais relacionados ao contexto acadêmico, o que restringe a aplicabilidade do sistema a esse domínio específico. Além disso, a coleta com 4 voluntários em ambiente controlado pode introduzir viés de representatividade — usuários com características físicas, velocidades de execução ou estilos de sinalização distintos dos presentes no \textit{dataset} podem obter taxas de reconhecimento inferiores às reportadas. Essa limitação é documentada de forma análoga em \cite{abdulhussein:20}, que ressalta a dificuldade de generalização de modelos treinados em conjuntos de dados pequenos. Adicionalmente, o desempenho do sistema está condicionado à qualidade da captura de vídeo: iluminação inadequada, oclusão parcial das mãos ou ângulos desfavoráveis da câmera podem degradar a extração de \textit{landmarks} pelo MediaPipe, comprometendo a classificação posterior. Ambientes universitários reais apresentam variabilidade de iluminação e posicionamento que não foram completamente reproduzidos na fase de coleta, o que pode reduzir a acurácia em cenários de uso efetivo. \cite{jain:24} identifica desafio semelhante ao tratar da robustez de sistemas de reconhecimento em condições não controladas.

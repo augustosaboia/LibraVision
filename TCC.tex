@@ -1,0 +1,313 @@
+%----------------------------
+% Projeto de Conclusão de Curso
+% Aluno: xpto
+%----------------------------
+\documentclass[
+	% -- opções da classe memoir --
+	%article,           % deixar comentado para monografia
+	10pt,				% tamanho da fonte
+	%openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	openany,
+    twoside,			% para impressão em recto e verso. Oposto a oneside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	% Títulos em MAIÚSCULAS 
+    chapter={TITLE},
+    section={TITLE},
+    subsection={TITLE},
+    subsubsection={TITLE},
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	french,				% idioma adicional para hifenização
+	spanish,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	sumario=tradicional
+]{abntex2}
+
+
+% ----------------------------
+% Pacotes para acentuação
+% ----------------------------
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8] {inputenc}
+    \usepackage{lmodern}
+    \usepackage{sty/sbc-template}
+    
+    \usepackage{tabularx}     % Largura auto
+    \usepackage{adjustbox}    % Escala/resize
+    \usepackage{longtable}    % Multi-página
+    \usepackage{rotating}     % Paisagem
+    \usepackage{booktabs}
+    \usepackage{float}
+    \floatstyle{plaintop}
+    \newfloat{quadro}{htb}{loq}
+    \floatname{quadro}{Quadro}
+
+%--------------------------------------------
+% Variáveis para preencher com os seus dados
+%--------------------------------------------
+    \title{LibrasVision: Desenvolvimento de um sistema de visão computacional para o reconhecimento de sinais dinâmicos em ambientes educacionais}
+    \renewcommand{\titulo}{LibrasVision: Desenvolvimento de um sistema de visão computacional para o reconhecimento de sinais dinâmicos em ambientes educacionais}
+    \subtitle{}
+    \author{Augusto Cezar Araujo Saboia \\
+    Lorenzo Toledo \\
+    Lucas Caitano Barreto \\
+    Elizeu Barbosa Souza \\ }
+    \cidade{Brasília}
+    \ano{2026}
+    \coordenacao{Coordenação do Curso de Ciência da Computação}
+    \titulacao{Ciência da Computação}
+    \orientador{Prof. Dr. Flavia Maria}
+%--------------------------------------------
+
+
+\renewcommand{\listfigurename}{}
+\begin{document}
+\pagestyle{empty}
+\maketitle
+\newpage
+% -------------------------------
+% Registro Bibliográfico
+% Faça as modificações nos campos que estão indicados com ??
+
+% Inicia paginação romana para pré-textuais
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+% -------------------------------
+% Ficha Catalográfica
+% -------------------------------
+\section*{}
+\vspace*{80pt}
+\begin{center}
+\begin{tcolorbox}[
+    enhanced,
+    sharp corners,
+    width=1.0\textwidth,
+    colback=white,
+    colframe=black,
+    boxrule=3pt,
+    boxsep=20pt,
+    frame style={draw=black, double distance=4pt, double, ultra thick},
+    ]
+    Saboia, Augusto Cezar Araujo; Toledo, Lorenzo; Barreto, Lucas Caitano; Souza, Elizeu Barbosa.
+    \hspace{1cm} Título : LibrasVision : Desenvolvimento de um sistema de visão computacional para o reconhecimento de sinais dinâmicos em ambientes educacionais / Augusto Cezar Araujo Saboia, Lorenzo Toledo, Lucas Caitano Barreto, Elizeu Barbosa Souza. -- Brasília, 2026.
+    \hspace{1cm} \pageref{LastPage} f. \\[2mm]
+   	Orientador: Prof. Dr. Flavia Maria.
+    \hspace{1cm}Trabalho de Conclusão de Curso (Graduação -- Ciência da Computação) -- Centro Universitário do Distrito Federal -- UDF. Coordenação do Curso de Ciência da Computação, Brasília, DF, 2026. \\[2mm]
+   	1. Visão Computacional. 2. Língua Brasileira de Sinais. 3. Aprendizado Profundo. I. LibrasVision. \\[2mm]
+   	\begin{flushright}
+    CDU: a definir
+    \end{flushright}
+\end{tcolorbox}
+\end{center}
+
+
+% -------------------------------
+% Assinaturas
+% Faça as modificações nos campos que estão indicados com ??
+% -------------------------------
+\newpage
+\section*{}
+
+\vspace*{10pt}
+\begin{center}
+LibrasVision: Desenvolvimento de um sistema de visão computacional para o reconhecimento de sinais dinâmicos em ambientes educacionais
+\vspace*{60pt}
+\begin{adjustwidth}{6cm}{-1cm}
+Trabalho de conclusão de curso apresentado à Coordenação do Curso de Ciência da Computação, do Centro Universitário do Distrito Federal -- UDF, como requisito parcial para obtenção do grau de bacharel em Ciência da Computação. \\[2mm]
+
+Orientador: Prof. Dr. Flavia Maria.
+\end{adjustwidth}
+\vspace*{40pt}
+Brasília, \underline{\hspace{2cm}} de \underline{\hspace{4cm}} de 2026.
+
+\vspace*{60pt}
+\begin{tabular}{p{7cm}}
+    \hline
+    \centering Prof. Dra. Flavia Maria \\
+    \centering Doutora \\
+    \centering Centro Universitário do Distrito Federal -- UDF
+\end{tabular}
+\end{center}
+
+\vspace*{40pt}
+Nota: \underline{\hspace{2cm}}
+
+
+% -------------------------------
+% Dedicatórias
+% -------------------------------
+\newpage
+\begin{dedicatoria2}{}
+Dedicamos este trabalho a todas as pessoas surdas e com deficiência auditiva, esperando que este projeto contribua para maior inclusão e acessibilidade no ambiente educacional.
+
+Dedicamos também à nossa orientadora, Prof. Dra. Flavia Maria, pelos ensinamentos, orientação e paciência ao longo de todo o processo de desenvolvimento deste trabalho.
+
+E em especial, aos nossos familiares e amigos que nos apoiaram e acreditaram em nossa capacidade de levar este projeto adiante.
+\end{dedicatoria2}
+
+% -------------------------------
+% Agradecimentos
+% -------------------------------
+\newpage
+\begin{agradecimento}{Agradecimentos}
+Agradecemos primeiramente a Deus por nos ter concedido força, saúde e disposição para realizar este trabalho.
+
+À nossa orientadora, Prof. Dra. Flavia Maria, agradecemos sinceramente pela orientação exemplar, pela dedicação em acompanhar nosso desenvolvimento, pelas críticas construtivas e pela confiança depositada em nosso projeto desde o início.
+
+Aos professores e funcionários do Centro Universitário do Distrito Federal (UDF) e da Coordenação do Curso de Ciência da Computação, agradecemos pelo apoio institucional e pela disponibilização de recursos necessários para a realização deste trabalho.
+
+À comunidade surda, agradecemos pela inspiração e pela importância de projetos como este que visam promover inclusão e acessibilidade.
+
+Aos nossos familiares e amigos que nos apoiaram ao longo desta jornada, oferecendo suporte emocional e compreensão durante os momentos de dedicação intensa ao projeto.
+
+E finalmente, uns aos outros, agradecemos pela colaboração, parceria e comprometimento de cada membro do grupo na busca por um resultado de excelência.
+\end{agradecimento}
+
+
+% -------------------------------
+% Frase motivacional
+% -------------------------------
+\newpage
+\begin{adjustwidth}{7cm}{0cm}
+\vspace*{\fill}
+\begin{flushright}
+"A educação é a arma mais poderosa que você pode usar para mudar o mundo." \\
+\vspace*{10pt}
+Nelson Mandela
+\end{flushright}
+\end{adjustwidth}
+
+
+% -------------------------------
+% Resumo
+% -------------------------------
+\newpage
+\begin{resumo2}
+O projeto LibrasVision propõe o desenvolvimento de um sistema de visão computacional capaz de reconhecer sinais dinâmicos da Língua Brasileira de Sinais (Libras) e traduzi-los para texto em tempo real, com o objetivo de reduzir barreiras de comunicação no ambiente acadêmico. A motivação do trabalho fundamenta-se na escassez de Tradutores e Intérpretes de Libras (TILSP) nas instituições de ensino superior brasileiras, o que compromete a plena participação e a autonomia de estudantes surdos. A solução proposta utiliza técnicas de aprendizado profundo, combinando a extração automatizada de marcos anatômicos corporais por meio do framework MediaPipe Holistic com uma rede neural recorrente do tipo LSTM (Long Short-Term Memory), responsável por interpretar a dinâmica temporal dos movimentos. A metodologia adotada classifica a pesquisa como aplicada e experimental, envolvendo a coleta de um conjunto de dados com voluntários surdos em ambiente controlado, o treinamento supervisionado do modelo e a avaliação de desempenho com base nas métricas de acurácia e latência. Os resultados preliminares indicam que o sistema alcança acurácia média superior a 97\% nas classes de sinais avaliadas, com latência de resposta entre 80 e 100 milissegundos, demonstrando viabilidade para uso em tempo real em contextos educacionais. Conclui-se que a abordagem baseada em landmarks é eficaz para o reconhecimento de sinais dinâmicos, com potencial de expansão para vocabulários mais amplos e aplicação em diferentes domínios.
+ 
+\vspace*{20pt}
+\textbf{Palavras-chave:} Visão Computacional, Libras, Aprendizado Profundo
+\end{resumo2}
+
+
+% -------------------------------
+% Abstract - Resumo traduzido para o Inglês
+% -------------------------------
+\newpage
+\begin{abstract}
+The LibrasVision project proposes the development of a computer vision system capable of recognizing dynamic signs of the Brazilian Sign Language (Libras) and translating them into text in real time, aiming to reduce communication barriers in academic environments. The motivation for this work stems from the shortage of qualified Libras interpreters in Brazilian higher education institutions, which hinders the full participation and autonomy of deaf students. The proposed solution employs deep learning techniques, combining automated anatomical landmark extraction through the MediaPipe Holistic framework with a Long Short-Term Memory (LSTM) recurrent neural network responsible for interpreting the temporal dynamics of hand and body movements. The methodology classifies this research as applied and experimental, encompassing data collection with deaf volunteers in a controlled setting, supervised model training, and performance evaluation based on accuracy and latency metrics. Preliminary results indicate that the system achieves an average accuracy above 97\% across the evaluated sign classes, with a response latency between 80 and 100 milliseconds, demonstrating viability for real-time use in educational contexts. It is concluded that the landmark-based approach is effective for recognizing dynamic signs and holds potential for expansion to broader vocabularies and application in different domains.
+
+\vspace*{20pt}
+\textbf{Keywords:} Computer Vision, Brazilian Sign Language, Deep Learning
+\end{abstract}
+
+
+% -------------------------------
+% Lista de Figuras
+% -------------------------------
+\newpage
+\listoffigures*
+
+
+% -------------------------------
+% Lista de Tabelas
+% -------------------------------
+\newpage
+\listoftables*
+
+
+% -------------------------------
+% Lista de Abreviaturas e Siglas
+% -------------------------------
+% No documento use: Isso é um \ac{ex}.
+% --------------------------------
+
+\chapter*{ABREVIATURAS E SIGLAS}
+
+\section*{Abreviaturas}
+\begin{acronym}
+  \acro{ex}{Exemplo}
+  \acro{etc}{Etcétera}
+  \acro{apx}{Aproximadamente}
+  % Adicione mais entradas conforme necessário
+\end{acronym}
+
+\section*{Siglas}
+\begin{acronym}
+  \acro{CNI}{Confederação Nacional da Indústria}
+  \acro{CNC}{Confederação Nacional do Comércio}
+  % Adicione mais entradas conforme necessário
+\end{acronym}
+
+\clearpage
+
+
+% -------------------------------
+% Sumario
+% -------------------------------
+\tableofcontents*
+
+
+% -------------------------------
+% INICIO DO TRABALHO - CAPÍTULOS
+% -------------------------------
+\textual
+
+% Muda para numeração arábica
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\chapter{Introdução}
+   \input{capitulos/cap1_introducao}
+
+\chapter{Objetivos}
+    \input{capitulos/cap2_objetivos}
+
+\chapter{Metodologia}
+    \input{capitulos/metodologia}
+
+\chapter{Desenvolvimento}
+    \input{capitulos/desenvolvimento}
+
+\chapter{Considerações Finais}
+    \input{capitulos/conclusao}
+
+
+% --------------------------------------
+% REFERÊNCIAS
+% --------------------------------------
+\bibliographystyle{abntex2-alf}
+
+\nocite{attili:24, abdulhussein:20, dockens:18, jain:24, li:22, wang:24,
+        lobo-neto:24, kamble:25, varshini:25, lia:25, myagila:25,
+        navendu:24, velmathi:23, silva-libras:25, gueuwou:25, grossi:24,
+        perdigoto:24, silva-embarcado:24, anithadevi:25, oudah:20, sahoo:19,
+        islam:19, saud:25, maia:25, costa-i3d:25, costa-slr:25, sousa:25,
+        silva-ia:25, silva-conexao:24, alves:24, fanucchi:24, hamidullah:25,
+        mdpi:25, scitepress:25}
+
+\bibliography{TCC}
+
+% --------------------------------------
+% GLOSSÁRIO
+% --------------------------------------
+\newpage
+    \chapter*{GLOSSÁRIO}
+    \input{capitulos/glossario}
+
+% --------------------------------------
+% APÊNDICE
+% --------------------------------------
+    \chapter*{APÊNDICE}
+    \input{capitulos/apendice}
+
+% --------------------------------------
+% ANEXOS
+% --------------------------------------
+    \chapter*{ANEXOS}
+    \input{capitulos/anexo}
+
+
+\end{document}

@@ -1,0 +1,16 @@
+% capitulos/cap2_objetivos.tex
+
+\section{Objetivo Geral}
+
+Desenvolver um sistema de visão computacional capaz de reconhecer sinais dinâmicos da Língua Brasileira de Sinais (Libras) e traduzi-los para texto em tempo real, com precisão superior a 85\% e baixa latência, visando reduzir barreiras de comunicação entre estudantes surdos e a comunidade ouvinte no ambiente acadêmico.
+
+\section{Objetivos Específicos}
+
+\begin{itemize}
+    \item Implementar um pipeline de captura e pré-processamento de vídeo em tempo real por meio de webcam convencional;
+    \item Integrar o framework MediaPipe Holistic para extração automatizada de marcos anatômicos (\textit{landmarks}) de mãos, rosto e tronco;
+    \item Construir um \textit{dataset} representativo de sinais de Libras voltados ao vocabulário acadêmico, contemplando diversidade de usuários e condições de iluminação;
+    \item Treinar e validar um modelo de rede neural recorrente do tipo LSTM para classificação de sequências temporais de sinais dinâmicos;
+    \item Avaliar o desempenho do sistema com base nas métricas de acurácia (meta: $\geq 85\%$) e latência de resposta;
+    \item Desenvolver uma interface de usuário para exibição das traduções em tempo real.
+\end{itemize}

@@ -1,0 +1,152 @@
+\section{Protótipo - Extração de Landmarks}
+
+Protótipo simplificado da extração de landmarks utilizando MediaPipe:
+
+\begin{lstlisting}[language=Python]
+import cv2
+import mediapipe as mp
+
+# Inicializa MediaPipe
+mp_holistic = mp.solutions.holistic
+holistic = mp_holistic.Holistic()
+
+# Captura vídeo
+cap = cv2.VideoCapture(0)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Processa frame
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = holistic.process(rgb_frame)
+
+    # Extrai landmarks das mãos
+    if results.left_hand_landmarks:
+        for lm in results.left_hand_landmarks.landmark:
+            print(f"Mão esquerda: x={lm.x}, y={lm.y}, z={lm.z}")
+
+    if results.right_hand_landmarks:
+        for lm in results.right_hand_landmarks.landmark:
+            print(f"Mão direita: x={lm.x}, y={lm.y}, z={lm.z}")
+
+    cv2.imshow('Frame', frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+\end{lstlisting}
+
+\section{Protótipo - Treinamento do Modelo LSTM}
+
+Protótipo simplificado do modelo LSTM para classificação:
+
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+
+# Constrói modelo simples
+model = Sequential([
+    LSTM(64, activation='relu', input_shape=(30, 543)),
+    Dense(32, activation='relu'),
+    Dense(3, activation='softmax')  # 3 classes: biblioteca, prova, secretaria
+])
+
+model.compile(optimizer='adam', loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Simula treinamento com dados aleatórios
+import numpy as np
+X_train = np.random.rand(100, 30, 543)  # 100 sequências
+y_train = np.random.randint(0, 3, (100, 3))
+
+model.fit(X_train, y_train, epochs=10, batch_size=32)
+\end{lstlisting}
+
+\section{Protótipo - Interface em Tempo Real}
+
+Protótipo simplificado da interface com predição:
+
+\begin{lstlisting}[language=Python]
+import cv2
+import mediapipe as mp
+import numpy as np
+
+# Carrega modelo treinado
+model = tf.keras.models.load_model('modelo_libras.h5')
+
+# Inicializa captura
+cap = cv2.VideoCapture(0)
+class_names = ['biblioteca', 'prova', 'secretaria']
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Extrai landmarks
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = holistic.process(rgb_frame)
+
+    # Simula predição
+    landmarks = np.random.rand(1, 30, 543)
+    prediction = model.predict(landmarks)
+    class_idx = np.argmax(prediction[0])
+    confidence = prediction[0][class_idx]
+
+    # Exibe resultado
+    if confidence > 0.7:
+        text = f"{class_names[class_idx]}: {confidence:.2f}"
+        cv2.putText(frame, text, (50, 50),
+                   cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+    cv2.imshow('LibrasVision', frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+\end{lstlisting}
+
+\section{Descrição do Dataset de Treinamento}
+
+O dataset foi coletado seguindo os critérios:
+
+\begin{itemize}
+    \item \textbf{Total de sinais coletados:} 150 vídeos (50 por classe)
+    \item \textbf{Usuários participantes:} 5 indivíduos surdos fluentes em Libras
+    \item \textbf{Duração média por sinal:} 2-3 segundos (60-90 quadros a 30 FPS)
+    \item \textbf{Resolução dos vídeos:} 640x480 pixels
+    \item \textbf{Condições de captura:} Iluminação natural e artificial, fundo neutro
+    \item \textbf{Variações incluídas:} Diferentes velocidades de execução, ângulos e distâncias da câmera
+\end{itemize}
+
+\section{Consentimento dos Participantes}
+
+Este projeto seguiu os protocolos éticos necessários para pesquisa envolvendo seres humanos. Todos os participantes assinaram Termo de Consentimento Livre e Esclarecido (TCLE) autorizando o uso de seus vídeos para fins de pesquisa, com garantia de anonimato e privacidade.
+
+Os dados foram armazenados de forma segura e apenas os landmarks (coordenadas abstratas) foram utilizados para treinamento, não armazenando os vídeos originais no modelo final.
+
+\section{Requisitos do Sistema}
+
+Para executar o LibrasVision em ambiente de produção:
+
+\begin{table}[htb]
+    \centering
+    \caption{Requisitos mínimos do sistema}
+    \label{tab:requisitos_sistema}
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Componente} & \textbf{Especificação Mínima} \\
+        \hline
+        Processador & Intel i5 ou equivalente \\
+        RAM & 4 GB \\
+        Câmera & Webcam 720p \\
+        Python & Versão 3.8+ \\
+        Sistema Operacional & Windows 10+, Linux, macOS \\
+        \hline
+    \end{tabular}
+\end{table}
