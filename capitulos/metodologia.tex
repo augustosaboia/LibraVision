@@ -8,6 +8,35 @@ O desenvolvimento do projeto foi organizado nas seguintes etapas:
 
 Serão selecionados sinais de Libras relacionados ao vocabulário acadêmico, como ``biblioteca'', ``prova'' e ``secretaria'', por serem de uso frequente e relevante no contexto universitário. A coleta de dados será realizada com 4 voluntários em ambiente controlado, com webcam posicionada frontalmente, garantindo enquadramento que capture completamente o corpo acima da cintura e diversidade em termos de perfis físicos e condições de iluminação. Cada sinal será gravado em múltiplas sequências de 30 quadros a 30 FPS, gerando um volume de dados suficiente para o treinamento supervisionado do modelo. A duração total da coleta está estimada em 3 meses. Os dados serão anonimizados e armazenados localmente, respeitando princípios de privacidade dos participantes.
 
+\section{Construção do Dataset}
+
+Para o treinamento do modelo, será necessário um conjunto de dados (\textit{dataset}) representativo e adequado ao domínio de aplicação. A literatura evidencia que a qualidade e diversidade do dataset são fatores determinantes para o desempenho dos sistemas de reconhecimento de sinais: \citeonline{perdigoto:24} observaram uma queda drástica de acurácia de 65,51\% para 6,97\% ao comparar imagens padronizadas com imagens capturadas por usuários leigos, ressaltando a importância de incluir variabilidade real na coleta de dados.
+
+Assim, será realizado o mapeamento e a coleta de sinais relacionados ao contexto acadêmico, como ``biblioteca'', ``prova'' e ``secretaria'', totalizando 150 vídeos divididos em três classes (50 por classe), a serem produzidos por 4 voluntários em ambiente controlado. Essa abordagem contrastará com datasets de maior escala da literatura (como o LSWH100, com 144.000 imagens sintéticas \cite{lobo-neto:24}, e o dataset MINDS-Libras utilizado por \citeonline{costa-i3d:25}), mas será delimitada pelo escopo do projeto e pelos recursos disponíveis, seguindo a estratégia de \citeonline{varshini:25}, que também criaram um dataset customizado com 800 vídeos de 20 classes com dois sinalizadores.
+
+A construção do dataset considerará a diversidade de usuários, buscando minimizar vieses no reconhecimento. Os dados serão coletados com Termo de Consentimento Livre e Esclarecido (TCLE), conforme exigências éticas de pesquisa com seres humanos. Além disso, os dados passarão por etapas de tratamento e padronização, incluindo a extração e normalização dos vetores de \textit{landmarks} via MediaPipe, garantindo maior qualidade para o treinamento do modelo.
+
+\section{Arquitetura do Sistema}
+\label{sec:arquitetura}
+
+O sistema proposto será estruturado em um pipeline dividido em etapas bem definidas. A arquitetura a ser adotada seguirá o padrão estabelecido na literatura de maior desempenho: extração de \textit{landmarks} via MediaPipe seguida de modelagem temporal via LSTM \cite{kamble:25,varshini:25,anithadevi:25,navendu:24,maia:25}.
+
+\subsection{Aquisição de Dados}
+
+A primeira etapa consistirá na captura de vídeo em tempo real por meio de uma webcam convencional, operando a aproximadamente 30 quadros por segundo (FPS). A independência de hardware especializado é uma característica deliberada do projeto: conforme demonstrado por \citeonline{attili:24} e \citeonline{kamble:25}, sistemas baseados em webcam padrão são viáveis para tradução de língua de sinais em tempo real, tornando a solução acessível a diferentes contextos socioeconômicos.
+
+\subsection{Extração de Características}
+
+Nesta fase, será utilizado o framework MediaPipe Holistic, responsável por identificar e rastrear pontos-chave do corpo humano (\textit{landmarks}), incluindo mãos, rosto e tronco. Ao todo, serão extraídos 543 pontos tridimensionais (x, y, z) por frame: 33 pontos de pose corporal, 21 pontos por mão (42 no total) e 468 pontos faciais. Essa representação reduzirá significativamente a necessidade de processar imagens completas, tornando o sistema mais eficiente e preservando a privacidade dos usuários ao não armazenar dados de imagem \cite{varshini:25,anithadevi:25,maia:25}.
+
+\subsection{Modelagem Temporal}
+
+Os vetores de \textit{landmarks} obtidos por cada frame serão organizados em sequências de comprimento fixo e enviados para uma rede neural LSTM. O LSTM é capaz de capturar as dependências temporais dos movimentos ao longo do tempo, diferenciando sinais que possuem configurações de mão semelhantes, mas trajetórias de movimento distintas, característica crítica para línguas de sinais dinâmicas como a Libras \cite{kamble:25,navendu:24}. Conforme \citeonline{anithadevi:25}, o uso de LSTM empilhado (\textit{stacked LSTM}) potencializa ainda mais essa capacidade discriminativa, contribuindo para os altos índices de acurácia reportados na literatura.
+
+\subsection{Tradução e Interface}
+
+Por fim, o sistema realizará a classificação do sinal com base na maior probabilidade calculada pelo modelo e exibirá o resultado em formato de texto para o usuário. A latência do sistema, isto é, o tempo entre a execução do sinal e a exibição do resultado, é um fator crítico para a usabilidade em ambientes educacionais. \citeonline{attili:24} demonstraram que sistemas similares podem operar com baixa latência em aplicações de comunicação inclusiva, o que orientou o projeto do LibrasVision para ambientes com restrições de tempo de resposta.
+
 \section{Implementação do Pipeline}
 
 O pipeline será desenvolvido em Python, utilizando as seguintes tecnologias:
@@ -23,7 +52,7 @@ A escolha por trabalhar com \textit{landmarks} ao invés de imagens completas re
 
 \section{Treinamento e Validação do Modelo}
 
-O modelo LSTM será treinado com os dados coletados, utilizando divisão na proporção de 80\% para treino e 20\% para validação. Os hiperparâmetros ajustados incluirão número de camadas, taxa de aprendizado (\textit{learning rate}) e número de épocas. O critério de aceitação estabelecido será acurácia superior a 85\% na base de validação. Após conclusão do treinamento, a análise dos resultados será conduzida através de métricas quantitativas --- acurácia global, precisão, revogação (\textit{recall}) e F1-score para cada classe de sinal --- complementadas por matriz de confusão para identificar quais sinais são frequentemente confundidos entre si. Além disso, será realizada análise qualitativa incluindo inspeção visual de padrões de erro e cenários de falha do sistema, permitindo identificar causas-raiz de falhas e orientar futuras melhorias.
+O modelo LSTM será treinado com os dados coletados, utilizando divisão na proporção de 80\% para treino e 20\% para validação. Os hiperparâmetros ajustados incluirão número de camadas, taxa de aprendizado (\textit{learning rate}) e número de épocas. O critério de aceitação estabelecido será acurácia superior a 85\% na base de validação. Após conclusão do treinamento, a análise dos resultados será conduzida através de métricas quantitativas (acurácia global, precisão, revogação (\textit{recall}) e F1-score para cada classe de sinal), complementadas por matriz de confusão para identificar quais sinais são frequentemente confundidos entre si. Além disso, será realizada análise qualitativa incluindo inspeção visual de padrões de erro e cenários de falha do sistema, permitindo identificar causas-raiz de falhas e orientar futuras melhorias.
 
 \section{Avaliação do Sistema}
 
