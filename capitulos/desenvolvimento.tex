@@ -17,12 +17,16 @@ Com o avanço das técnicas de aprendizado de máquina, o rastreamento de pontos
 
 \section{Aprendizado Profundo para Reconhecimento de Sinais}
 
-O Aprendizado Profundo (\textit{Deep Learning}) revolucionou o reconhecimento de gestos ao permitir que modelos aprendam automaticamente representações hierárquicas de características a partir de grandes volumes de dados, conforme ilustrado na Figura \ref{fig:deeplearning}. Dentro desse paradigma, as Redes Neurais Convolucionais (CNNs) e as Redes de Memória de Curto e Longo Prazo (LSTM) são as arquiteturas mais amplamente empregadas para o reconhecimento de língua de sinais.
+As abordagens clássicas de reconhecimento de gestos e língua de sinais dependiam fortemente da engenharia manual de características (\textit{feature engineering}): especialistas definiam descritores de cor, forma, textura ou movimento que o classificador deveria aprender a distinguir. Embora funcionais em condições controladas, esses métodos apresentavam limitações importantes ao lidar com a variabilidade natural dos sinalizadores, variações de iluminação e a complexidade temporal dos sinais dinâmicos, conforme documentado por \citeonline{oudah:20} em revisão abrangente sobre reconhecimento de gestos manuais.
+
+O Aprendizado Profundo (\textit{Deep Learning}) superou essas limitações ao permitir que os próprios modelos aprendam automaticamente, a partir dos dados, quais representações são mais discriminativas para a tarefa. Em vez de features projetadas por humanos, redes profundas constroem hierarquias de representações progressivamente mais abstratas: das bordas e texturas nas camadas iniciais até padrões semânticos complexos nas camadas finais \cite{li:22}. Aplicado ao reconhecimento de língua de sinais, esse paradigma permitiu que sistemas aprendessem diretamente as configurações de mão, trajetórias de movimento e expressões faciais relevantes sem intervenção manual, resultando em ganhos expressivos de acurácia e generalização \cite{grossi:24}. Revisões sistemáticas recentes confirmam que as abordagens baseadas em aprendizado profundo dominam os resultados de estado da arte no reconhecimento de Libras e de outras línguas de sinais \cite{costa-slr:25, silva-ia:25}.
+
+Dentro desse paradigma, duas famílias de arquiteturas se destacam pela complementaridade de suas capacidades, conforme ilustrado na Figura \ref{fig:deeplearning}: as Redes Neurais Convolucionais (CNNs), especializadas na extração de características espaciais a partir de imagens e frames de vídeo \cite{attili:24}; e as Redes de Memória de Curto e Longo Prazo (LSTM), projetadas para modelar dependências temporais em sequências de dados \cite{kamble:25}. As subseções a seguir detalham cada uma dessas arquiteturas e sua aplicação ao reconhecimento de sinais dinâmicos.
 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.8\textwidth]{images/deepL.png}
-    \caption{Conceitos de Deep Learning aplicados ao reconhecimento de padrões em dados visuais}
+    \caption{Conceitos de Deep Learning aplicados ao reconhecimento de padrões em dados visuais: da extração automática de características às representações hierárquicas que fundamentam o reconhecimento de língua de sinais}
     \label{fig:deeplearning}
 \end{figure}
 
