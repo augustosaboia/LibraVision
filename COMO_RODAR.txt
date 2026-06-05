@@ -1,0 +1,97 @@
+====================================================
+  LibrasVision - Como rodar no Windows (CMD/PowerShell)
+====================================================
+
+REQUISITO: Python 3.11 ou 3.12 instalado.
+Download: https://www.python.org/downloads/release/python-3121/
+
+
+----------------------------------------------------
+1. CLONAR O REPOSITÓRIO (só na primeira vez)
+----------------------------------------------------
+
+git clone https://github.com/SEU_USUARIO/LibrasVision.git
+cd LibrasVision
+
+
+----------------------------------------------------
+2. CRIAR O AMBIENTE VIRTUAL (só na primeira vez)
+----------------------------------------------------
+
+py -3.12 -m venv .venv
+
+
+----------------------------------------------------
+3. ATIVAR O AMBIENTE VIRTUAL (fazer SEMPRE antes de rodar)
+----------------------------------------------------
+
+.venv\Scripts\activate.bat
+
+O prompt vai mostrar (.venv) no início quando estiver ativo.
+
+
+----------------------------------------------------
+4. INSTALAR AS DEPENDÊNCIAS (só na primeira vez)
+----------------------------------------------------
+
+pip install -r requirements.txt
+
+
+----------------------------------------------------
+5. RODAR O DEMO
+----------------------------------------------------
+
+python librasvision_demo.py
+
+
+----------------------------------------------------
+CONTROLES DA JANELA
+----------------------------------------------------
+
+  q / ESC   -> sair
+  h         -> mostra/oculta o painel (HUD)
+  t         -> alterna malha facial completa
+  m         -> alterna espelhamento da imagem
+  f         -> tela cheia (use no projetor)
+  s         -> salva print da tela (screenshot)
+  espaço    -> reinicia a janela de 30 frames
+
+
+----------------------------------------------------
+SE A CÂMERA NÃO ABRIR
+----------------------------------------------------
+
+Tenta passar o índice manualmente:
+
+python librasvision_demo.py --camera 1
+
+Ou:
+
+python librasvision_demo.py --camera 2
+
+
+----------------------------------------------------
+SE TRAVAR OU FPS BAIXO
+----------------------------------------------------
+
+Usa o modo mais leve:
+
+python librasvision_demo.py --complexity 0
+
+
+----------------------------------------------------
+PARA SAIR DO AMBIENTE VIRTUAL
+----------------------------------------------------
+
+deactivate
+
+
+====================================================
+RESUMO RÁPIDO (do dia a dia, depois de já ter configurado)
+====================================================
+
+cd C:\Users\loren\Github\LibrasVision
+.venv\Scripts\activate.bat
+python librasvision_demo.py
+
+====================================================
