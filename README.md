@@ -35,7 +35,7 @@ O protótipo exibe ao vivo:
 
 | Nome | GitHub |
 |---|---|
-| Augusto Cezar Araujo Saboia | — |
+| Augusto Cezar Araujo Saboia | [@augustosaboia](https://github.com/augustosaboia) |
 | Elizeu Barbosa Souza | — |
 | Lorenzo Toledo | [@lorenzotoledo0](https://github.com/lorenzotoledo0) |
 | Lucas Caitano Barreto | — |
@@ -57,7 +57,7 @@ O protótipo exibe ao vivo:
 **1. Clone o repositório**
 
 ```bash
-git clone https://github.com/lorenzotoledo0/LibrasVision.git
+git clone https://github.com/augustosaboia/LibrasVision.git
 cd LibrasVision
 ```
 
